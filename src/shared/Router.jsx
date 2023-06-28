@@ -15,6 +15,7 @@ import Mypage from "../pages/Mypage";
 //동준 추가
 import PostCreate from "../pages/PostCreate";
 import PostUpdate from "../pages/PostUpdate";
+import CommentUpdata from "../pages/CommentUpdata";
 
 const Router = () => {
   return (
@@ -34,6 +35,7 @@ const Router = () => {
             <Route path="/star" element={<Star />} />
             <Route path="/about" element={<About />} />
             <Route path="/mypage/profile/:id" element={<Mypage />} />
+            <Route path="/post/commentup/:id" element={<CommentUpdata />} />
           </Routes>
         </Layout>
       </BrowserRouter>
