@@ -12,8 +12,8 @@ const PostUpdate = () => {
 
   const { id } = useParams();
   const posts = useSelector((state) => state.posts);
-  const post = posts.filter((post) => post.id === id)[0];
-
+  const post = posts.filter((post) => post.postId === id)[0];
+  console.log("post가 =>>",id)
   if(!post) {
     navigate("/post")
     return;
@@ -26,13 +26,13 @@ const PostUpdate = () => {
       </div>
       <form onSubmit={async (event)=> {
         event.preventDefault();
-        const postRef = doc(db, "posts", post.id);
+        const postRef = doc(db, "posts", post.postId);
         await updateDoc(postRef, { ...post, postTitle: updatePostTitle, postBody: updatePostBody })
         console.log("postRef",postRef)
         dispatch({
           type: "UPDATE_POST",
           payload: {
-            id: id,
+            postId: id,
             postTitle: updatePostTitle,
             postBody: updatePostBody,
           }

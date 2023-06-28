@@ -16,9 +16,9 @@ const PostList = () => {
         <h1>전체게시글</h1>
         {posts.map((post) => {
           return (
-            <S.PostingBox key={post.id}>
-              <Link to={`/post/${post.id}`}>글 상세보기</Link>
-              <p>{post.id}</p>
+            <S.PostingBox key={post.postId}>
+              <Link to={`/post/${post.postId}`}>글 상세보기</Link>
+              <p>{post.postId}</p>
               <p>{post.postTitle}</p>
               <p>{post.postBody}</p>
             </S.PostingBox>

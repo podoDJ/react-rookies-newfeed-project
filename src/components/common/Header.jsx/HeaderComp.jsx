@@ -38,7 +38,7 @@ export const UserHeaderComp = () => {
         <S.HeaderMenu onClick={() => navigate("/")}>로고</S.HeaderMenu>
         <S.HeaderMenu onClick={() => navigate("/post")}>POST</S.HeaderMenu>
         <S.HeaderMenu onClick={() => navigate("/star")}>MEMBER</S.HeaderMenu>
-        <S.HeaderMenu onClick={() => navigate("/")}>PROFILE</S.HeaderMenu>
+        <S.HeaderMenu onClick={() => navigate("/mypage/profile/:id")}>PROFILE</S.HeaderMenu>
       </S.HeaderMenuDiv>
       <S.HeaderMenuDiv>
         <S.HeaderMenu onClick={logOutFunc}>Log Out</S.HeaderMenu>

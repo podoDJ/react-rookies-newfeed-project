@@ -9,7 +9,7 @@ const PostDetailBrowse = () => {
   console.log("여기는 POSTDETAILBROWSE");
   const { id } = useParams(); // id === documentId
   const posts = useSelector((state) => state.posts);
-  const post = posts.filter((post) => post.id === id)[0];
+  const post = posts.filter((post) => post.postId === id)[0];
   
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -19,25 +19,25 @@ const PostDetailBrowse = () => {
   }
   return (
     <S.PostDetailBox>
-      <p>{post.id}</p>
+      <p>{post.postId}</p>
       <p>{post.postTitle}</p>
       <p>{post.postBody}</p>
       <button
         onClick={async () => {
 
-          console.log('post.id => ', post.id)
-          
-          const postRef = doc(db, "posts", post.id);
+          console.log('post.id => ', post.postId)
+          //문서아이디=필드아이디
+          const postRef = doc(db, "posts", post.postId);
           await deleteDoc(postRef);
           dispatch({
             type: "DELETE_POST",
-            payload: post.id,
+            payload: post.postId,
           });
         }}
       >
         삭제하기
       </button>
-      <Link to={`/postupdate/${post.id}`}>
+      <Link to={`/postupdate/${post.postId}`}>
       <button>
         수정하기
       </button>
