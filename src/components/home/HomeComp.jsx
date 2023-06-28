@@ -16,18 +16,15 @@ const HomeComp = () => {
       querySnapshot.forEach((doc) => {
         newArr.push({ id: doc.id, ...doc.data() });
       });
-      console.log(newArr);
+      dispatch(showPosts(newArr));
+      dispatch(sortLikePosts());
       return newArr;
     };
     fetchData();
-    dispatch(showPosts(newArr));
-    // dispatch(sortLikePosts());
   }, []);
 
-  const popPosts = useSelector((state) => {
-    return state.posts;
-  });
-  // console.log(popPosts.slice(0, 3));
+  const popPosts = useSelector((state) => state.posts);
+  console.log(popPosts);
 
   return (
     <>
@@ -36,7 +33,7 @@ const HomeComp = () => {
         <S.CardContainer>
           {popPosts.slice(0, 5).map((item) => {
             return (
-              <S.Card>
+              <S.Card key={item.id}>
                 <p>{item.like}</p>
                 <p>{item.postTitle}</p>
                 <p>{item.id}</p>
