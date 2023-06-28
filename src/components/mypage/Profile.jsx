@@ -7,12 +7,17 @@ import { useNavigate } from "react-router-dom";
 import { styled, css } from "styled-components";
 
 const Profile = () => {
+  const user = useSelector((state) => state.logReducer.user);
+  const uid = user.uid;
   const profile = useSelector((state) => state.profile.profile);
   const photoURL = useSelector((state) => state.profile.photoURL);
   const displayName = useSelector((state) => state.profile.displayName);
   const profileCmt = useSelector((state) => state.profile.profileCmt);
   const navigate = useNavigate();
   const dispatch = useDispatch();
+
+  // console.log(user.uid);
+  console.log("uid", uid);
 
   const changeDisplayName = (e) => dispatch(setDisplayName(e.target.value));
   const changeProfileCmt = (e) => dispatch(setProfileCmt(e.target.value));
@@ -56,7 +61,7 @@ const Profile = () => {
       dispatch(setProfile(initialProfile));
     };
     fetchData();
-  }, [dispatch]);
+  }, [uid]);
 
   return (
     <>
