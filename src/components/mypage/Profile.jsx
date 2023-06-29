@@ -13,7 +13,7 @@ const Profile = () => {
   const dispatch = useDispatch();
 
   // console.log(user.uid);
-  console.log("uid", uid);
+  console.log("uid : ", uid);
 
   // useRef를 이용하여 input태그에 접근
   const imageFileInput = useRef();
