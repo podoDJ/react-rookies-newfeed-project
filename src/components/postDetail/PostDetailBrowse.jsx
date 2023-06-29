@@ -5,11 +5,9 @@ import { deleteDoc, doc } from "firebase/firestore";
 import { db } from "../../firebase";
 import { styled } from "styled-components";
 
-const PostDetailBrowse = () => {
+const PostDetailBrowse = ( { post } ) => {
   console.log("여기는 POSTDETAILBROWSE");
-  const { id } = useParams(); // id === documentId
-  const posts = useSelector((state) => state.posts);
-  const post = posts.filter((post) => post.postId === id)[0];
+
 
   const dispatch = useDispatch();
   const navigate = useNavigate();

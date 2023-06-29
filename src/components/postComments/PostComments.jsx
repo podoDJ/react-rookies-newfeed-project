@@ -5,7 +5,8 @@ import { addDoc, collection, deleteDoc, doc, setDoc } from "firebase/firestore";
 import { db } from "../../firebase";
 import { Link } from "react-router-dom";
 
-const PostComments = () => {
+const PostComments = ( {post} ) => {
+  console.log("post ==> ",post)
   const comments = useSelector((state) => {
     return state.comment;
   });
@@ -29,6 +30,7 @@ const PostComments = () => {
               commentId: docRef.id,
               title,
               comment,
+              postId: post.id
             },
           });
         }}
