@@ -45,7 +45,6 @@ const PostForm = () => {
     const photoURL = await getDownloadURL(imageRef);
     setPhotoURL(photoURL);
   };
-  console.log("ssss", photoURL);
   return (
     <>
       <div>
