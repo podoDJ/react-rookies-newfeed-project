@@ -13,8 +13,8 @@ const CommentChange = () => {
   const { id } = useParams();
 
   const comments = useSelector((state) => state.comment);
+  const comment = comments.find((comment) => comment.commentId === id);
 
-  const comment = comments.filter((comment) => comment.id === id);
   console.log("id", id);
 
   const dispatch = useDispatch();
@@ -25,8 +25,9 @@ const CommentChange = () => {
         onSubmit={async (e) => {
           e.preventDefault();
           const commentRef = doc(db, "comments", comment.commentId);
-          await updateDoc(commentRef, { title: uptitle, comment: upComment });
-          console.log("commentRef", commentRef);
+
+          await updateDoc(commentRef, { ...comment, title: uptitle, comment: upComment });
+
           dispatch({
             type: UPDATE_COMMENT,
             payload: {
@@ -35,6 +36,7 @@ const CommentChange = () => {
               comment: upComment,
             },
           });
+          navigate(`/post/`);
         }}
       >
         <input
@@ -51,72 +53,10 @@ const CommentChange = () => {
             setUpComment(e.target.value);
           }}
         />
-        <button>수정하기</button>
+        <button>수정</button>
       </form>
     </div>
   );
 };
 
 export default CommentChange;
-// const CommentChange = () => {
-//   const dispatch = useDispatch();
-//   const navigate = useNavigate();
-//   const [updateCommentTitle, setUpdateCommentTitle] = useState("");
-//   const [updateCommentBody, setUpdateCommentBody] = useState("");
-
-//   const { id } = useParams();
-//   const comments = useSelector((state) => state.comment);
-//   const comment = comments.filter((comment) => comment.commentId === id)[0];
-
-//   if (!comment) {
-//     navigate("/post");
-//     return;
-//   }
-
-//   return (
-//     <>
-//       <form
-//         onSubmit={async (event) => {
-//           event.preventDefault();
-//           const commentRef = doc(db, "comments", comment.commentId);
-//           await updateDoc(commentRef, { ...comment, commentTitle: updateCommentTitle, commentBody: updateCommentBody });
-
-//           dispatch({
-//             type: "UPDATE_POST",
-//             payload: {
-//               commentId: id,
-//               commentTitle: updateCommentTitle,
-//               commentBody: updateCommentBody,
-//             },
-//           });
-//           navigate("/post");
-//         }}
-//       >
-//         <div>
-//           <label>제목</label>
-//           <input
-//             text="text"
-//             name="postTitle"
-//             value={updateCommentTitle}
-//             placeholder={comment.commentTitle}
-//             onChange={(event) => {
-//               setUpdateCommentTitle(event.target.value);
-//             }}
-//           />
-//           <label>내용</label>
-//           <textarea
-//             text="text"
-//             name="postBody"
-//             value={updateCommentBody}
-//             onChange={(event) => {
-//               setUpdateCommentBody(event.target.value);
-//             }}
-//           />
-//         </div>
-//         <button>수정완료</button>
-//       </form>
-//     </>
-//   );
-// };
-
-// export default CommentChange;

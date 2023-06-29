@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { ADD_COMMENT, REMOVE_COMMENT } from "../../redux/modules/comment";
-import { addDoc, collection, deleteDoc, doc, getDocs, query, setDoc } from "firebase/firestore";
+import { addDoc, collection, deleteDoc, doc, setDoc } from "firebase/firestore";
 import { db } from "../../firebase";
 import { Link } from "react-router-dom";
 
@@ -9,10 +9,10 @@ const PostComments = () => {
   const comments = useSelector((state) => {
     return state.comment;
   });
-  console.log(comments);
   const [title, setTitle] = useState("");
   const [comment, setComment] = useState("");
   const dispatch = useDispatch();
+  // const deletComment = comments.filter((comment) => comment.commentId === id)[0];
   return (
     <div>
       <h3>댓글</h3>
@@ -21,7 +21,6 @@ const PostComments = () => {
           e.preventDefault();
           const collectionRef = collection(db, "comments");
           const docRef = await addDoc(collectionRef, { title, comment });
-          console.log("파이어스토어의 도큐먼트 아이디 =>", docRef.id);
           const commentDocRef = doc(db, "comments", docRef.id);
           await setDoc(commentDocRef, { commentId: docRef.id }, { merge: true });
           dispatch({
@@ -55,7 +54,9 @@ const PostComments = () => {
         <button>작성</button>
       </form>
       <div>
+        <h2>댓글</h2>
         {comments.map((comment) => {
+          console.log("comments =>", comments);
           return (
             <div key={comment.commentId}>
               <p>{comment.commentId}</p>
@@ -67,12 +68,13 @@ const PostComments = () => {
 
               <button
                 onClick={async () => {
-                  const commentRef = doc(db, "comments", comment.id);
+                  const commentRef = doc(db, "comments", comment.commentId);
+                  console.log("commentRef=>", commentRef);
                   await deleteDoc(commentRef);
 
                   dispatch({
                     type: REMOVE_COMMENT,
-                    payload: comment.id,
+                    payload: comment.commentId,
                   });
                 }}
               >

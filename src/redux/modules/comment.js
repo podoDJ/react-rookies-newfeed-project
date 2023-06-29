@@ -12,11 +12,11 @@ const comment = (state = initialState, action) => {
     case ADD_COMMENT:
       return [action.payload, ...state];
     case REMOVE_COMMENT:
-      return state.filter((comment) => comment.id !== action.payload);
+      return state.filter((comment) => comment.commentId !== action.payload);
     case UPDATE_COMMENT:
       return state.map((comment) => {
         if (comment.commentId === action.payload.commentId) {
-          return { ...comment, Title: action.payload, commentBody: action.payload };
+          return { ...comment, Title: action.payload.title, comment: action.payload.commentId };
         } else {
           return comment;
         }

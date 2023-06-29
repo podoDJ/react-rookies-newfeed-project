@@ -10,11 +10,11 @@ const PostDetailBrowse = () => {
   const { id } = useParams(); // id === documentId
   const posts = useSelector((state) => state.posts);
   const post = posts.filter((post) => post.postId === id)[0];
-  
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  if(!post) {
-    navigate("/post")
+  if (!post) {
+    navigate("/post");
     return;
   }
   return (
@@ -24,8 +24,7 @@ const PostDetailBrowse = () => {
       <p>{post.postBody}</p>
       <button
         onClick={async () => {
-
-          console.log('post.id => ', post.postId)
+          console.log("post.id => ", post.postId);
           //문서아이디=필드아이디
           const postRef = doc(db, "posts", post.postId);
           await deleteDoc(postRef);
@@ -38,9 +37,7 @@ const PostDetailBrowse = () => {
         삭제하기
       </button>
       <Link to={`/postupdate/${post.postId}`}>
-      <button>
-        수정하기
-      </button>
+        <button>수정하기</button>
       </Link>
     </S.PostDetailBox>
   );
@@ -53,5 +50,5 @@ const S = {
     border: 1px solid black;
     margin: 10px;
     padding: 10px;
-  `
-}
+  `,
+};
