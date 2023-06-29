@@ -9,9 +9,7 @@ const Profile = () => {
   const user = useSelector((state) => state.logReducer.user);
   const uid = user?.uid;
   const profile = useSelector((state) => state.profile.profile);
-  const photoURL = useSelector((state) => state.profile.photoURL);
   const displayName = useSelector((state) => state.profile.displayName);
-  const profileCmt = useSelector((state) => state.profile.profileCmt);
   const dispatch = useDispatch();
 
   // console.log(user.uid);
