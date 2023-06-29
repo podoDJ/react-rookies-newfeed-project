@@ -4,7 +4,10 @@ import { Link } from "react-router-dom";
 import { styled } from "styled-components";
 
 const PostList = () => {
-  console.log("여기는 POSTLIST");
+  useEffect(() => {
+    console.log("여기는 POSTLIST");
+  },[])
+  
 
   const posts = useSelector((state) => {
     return state.posts;
@@ -16,12 +19,17 @@ const PostList = () => {
       <div>
         <h1>전체게시글</h1>
         {posts.map((post) => {
+          console.log(post)
           return (
             <S.PostingBox key={post.postId}>
               <Link to={`/post/${post.postId}`}>글 상세보기</Link>
-              <p>{post.postId}</p>
-              <p>{post.postTitle}</p>
-              <p>{post.postBody}</p>
+              
+              <div><span onClick={() => {}}>👍{(post?.whoLiked?.length) || 0}</span></div>
+              <p>글 아이디: {post.postId}</p>
+              <p>제목: {post.postTitle}</p>
+              <p>내용: {post.postBody}</p>
+              <p>uid: {post.uid}</p>
+              <p>작성일: {post.postDate}</p>
             </S.PostingBox>
           );
         })}

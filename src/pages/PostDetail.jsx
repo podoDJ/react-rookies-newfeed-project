@@ -6,7 +6,7 @@ const PostDetail = () => {
   return (
     <div>
       <PostDetailBrowse />
-      <PostComments />
+      {/* <PostComments /> */}
     </div>
   );
 };

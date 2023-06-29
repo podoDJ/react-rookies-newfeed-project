@@ -19,14 +19,14 @@ const PostComments = () => {
           id: doc.id,
           ...doc.data(),
         };
-        console.log("data", data);
+        //console.log("data", data);
         comments.push(data);
       });
     };
     fetchData();
   }, []);
 
-  console.log(comments);
+  //console.log(comments);
   const [title, setTitle] = useState("");
   const [comment, setComment] = useState("");
   const dispatch = useDispatch();

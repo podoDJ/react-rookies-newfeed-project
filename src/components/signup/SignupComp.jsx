@@ -4,8 +4,6 @@ import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 import { styled } from "styled-components";
 import { ERR_CODE } from "../../constant";
-import { useDispatch } from "react-redux";
-import { logChange } from "../../redux/modules/logReducer";
 
 const SignupComp = () => {
   const [name, setName] = useState("");
@@ -15,7 +13,6 @@ const SignupComp = () => {
 
   // const inputRef = useRef([]);
   const navigate = useNavigate();
-  const dispatch = useDispatch();
 
   //회원가입 기능
   const signupFunc = async () => {
@@ -25,7 +22,6 @@ const SignupComp = () => {
       console.log(userCredential.user);
       alert("회원가입 완료");
       navigate("/");
-      dispatch(logChange(true));
     } catch (error) {
       const errorCode = error.code;
       const errorMessage = error.message;
