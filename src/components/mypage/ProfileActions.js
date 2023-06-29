@@ -17,11 +17,11 @@ export const updatePhotoURL = (file, uid) => {
 
       // 파이어베이스에 프로필 사진 업데이트
       const firestore = getFirestore(app);
-      const userRef = doc(firestore, `profile/${uid}`);
+      const userRef = doc(firestore, `users/${uid}`);
       await updateDoc(userRef, { photoURL: downloadURL });
 
       // 상태 업데이트
-      dispatch(setPhotoURL(downloadURL));
+      dispatch({ type: "UPDATE_PHOTO_URL", payload: file });
     } catch (error) {
       console.log("프로필 사진 업데이트 오류", error);
     }
@@ -31,7 +31,7 @@ export const updatePhotoURL = (file, uid) => {
 export const setProfile = (profile) => {
   return {
     type: "SET_PROFILE",
-    payload: profile || [], // profile이 비어있을 경우 빈 배열을 전달
+    payload: profile,
   };
 };
 
@@ -42,30 +42,16 @@ export const setPhotoURL = (photoURL) => {
   };
 };
 
-export const setDisplayName = (displayName, uid) => {
-  return async (dispatch, getState) => {
-    try {
-      const firestore = getFirestore(app);
-      const userRef = doc(firestore, `profile/${uid}`);
-      await updateDoc(userRef, { displayName });
-
-      dispatch({ type: "SET_DISPLAY_NAME", payload: displayName });
-    } catch (error) {
-      console.log("이름 변경 오류", error);
-    }
+export const setDisplayName = (displayName) => {
+  return {
+    type: "SET_DISPLAY_NAME",
+    payload: displayName,
   };
 };
 
-export const setProfileCmt = (profileCmt, uid) => {
-  return async (dispatch, getState) => {
-    try {
-      const firestore = getFirestore(app);
-      const userRef = doc(firestore, `profile/${uid}`);
-      await updateDoc(userRef, { profileCmt });
-
-      dispatch({ type: "SET_PROFILE_CMT", payload: profileCmt });
-    } catch (error) {
-      console.log("프로필 소개글 변경 오류", error);
-    }
+export const setProfileCmt = (profileCmt) => {
+  return {
+    type: "SET_PROFILE_CMT",
+    payload: profileCmt,
   };
 };
