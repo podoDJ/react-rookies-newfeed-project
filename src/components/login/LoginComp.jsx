@@ -5,6 +5,7 @@ import { auth } from "../../firebase";
 import { styled } from "styled-components";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
+import { logChange } from "../../redux/modules/logReducer";
 
 const LoginComp = () => {
   const [email, setEmail] = useState("");
@@ -16,6 +17,7 @@ const LoginComp = () => {
     try {
       const userCredential = await signInWithEmailAndPassword(auth, email, password);
       console.log("user with signIn", userCredential);
+      dispatch(logChange(true));
     } catch (error) {
       const errorCode = error.code;
       const errorMessage = error.message;

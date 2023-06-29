@@ -3,6 +3,8 @@ import { useNavigate } from "react-router-dom";
 import { styled } from "styled-components";
 import { auth } from "../../../firebase";
 import { signOut } from "firebase/auth";
+import { useDispatch } from "react-redux";
+import { logChange } from "../../../redux/modules/logReducer";
 
 export const HeaderComp = () => {
   const navigate = useNavigate();
@@ -24,10 +26,11 @@ export const HeaderComp = () => {
 
 export const UserHeaderComp = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const logOutFunc = async () => {
     await signOut(auth);
-    window.location.reload();
+    dispatch(logChange(false));
   };
   return (
     <S.Header>

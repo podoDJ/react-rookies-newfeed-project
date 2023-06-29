@@ -4,18 +4,27 @@ import { sortLikePosts, showPosts } from "../../redux/modules/postWrite";
 import { useEffect } from "react";
 import { collection, getDocs, query } from "@firebase/firestore";
 import { db } from "../../../src/firebase";
-import { showMembers, sortLikeMembers } from "../../redux/modules/logReducer";
 
 const HomeComp = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(sortLikePosts());
-    dispatch(sortLikeMembers());
+    const newArr = [];
+    const fetchData = async () => {
+      const q = query(collection(db, "posts"));
+      const querySnapshot = await getDocs(q);
+      querySnapshot.forEach((doc) => {
+        newArr.push({ id: doc.id, ...doc.data() });
+      });
+      dispatch(showPosts(newArr));
+      dispatch(sortLikePosts());
+      return newArr;
+    };
+    fetchData();
   }, []);
 
   const popPosts = useSelector((state) => state.posts);
-  const StarList = useSelector((state) => state.logReducer.members);
+  console.log(popPosts);
 
   return (
     <>
@@ -25,10 +34,9 @@ const HomeComp = () => {
           {popPosts.slice(0, 5).map((item) => {
             return (
               <S.Card key={item.id}>
-                <p>{item.postWhoLiked?.length || 0}</p>
+                <p>{item.like}</p>
                 <p>{item.postTitle}</p>
-                <p>{item.postDate}</p>
-                <p>작성자</p>
+                <p>{item.id}</p>
               </S.Card>
             );
           })}
@@ -37,15 +45,11 @@ const HomeComp = () => {
       <S.Container>
         <p>인기 멤버</p>
         <S.CardContainer>
-          {StarList.slice(0, 5).map((item) => {
-            return (
-              <S.Card key={item.id}>
-                <p>{item.displayName}</p>
-                <p>{item.likes}</p>
-                <p>게시글</p>
-              </S.Card>
-            );
-          })}
+          <S.Card>
+            <p>이름</p>
+            <p>좋아요</p>
+            <p>게시글</p>
+          </S.Card>
         </S.CardContainer>
       </S.Container>
     </>
