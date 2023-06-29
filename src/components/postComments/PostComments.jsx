@@ -5,8 +5,9 @@ import { addDoc, collection, deleteDoc, doc, setDoc } from "firebase/firestore";
 import { db } from "../../firebase";
 import { Link } from "react-router-dom";
 
-const PostComments = ( {post} ) => {
-  console.log("post ==> ",post)
+const PostComments = ( {post}, {id} ) => {
+  console.log("ididididid", id)
+  console.log("postostost ==> ",post)
   const comments = useSelector((state) => {
     return state.comment;
   });
@@ -22,8 +23,9 @@ const PostComments = ( {post} ) => {
           e.preventDefault();
           const collectionRef = collection(db, "comments");
           const docRef = await addDoc(collectionRef, { title, comment });
+          console.log(docRef.id)
           const commentDocRef = doc(db, "comments", docRef.id);
-          await setDoc(commentDocRef, { commentId: docRef.id }, { merge: true });
+          await setDoc(commentDocRef, { commentId: docRef.id, postId: post.id }, { merge: true });
           dispatch({
             type: ADD_COMMENT,
             payload: {
@@ -57,7 +59,9 @@ const PostComments = ( {post} ) => {
       </form>
       <div>
         <h2>댓글</h2>
-        {comments.map((comment) => {
+        {comments
+        // .filter((comment) => comment.)
+        .map((comment) => {
           console.log("comments =>", comments);
           return (
             <div key={comment.commentId}>
@@ -70,6 +74,7 @@ const PostComments = ( {post} ) => {
 
               <button
                 onClick={async () => {
+ 
                   const commentRef = doc(db, "comments", comment.commentId);
                   console.log("commentRef=>", commentRef);
                   await deleteDoc(commentRef);

@@ -8,10 +8,11 @@ const PostDetail = () => {
   const { id } = useParams(); // id === documentId
   const posts = useSelector((state) => state.posts);
   const post = posts.filter((post) => post.postId === id)[0];
+
   return (
     <div>
       <PostDetailBrowse post = {post} id = { id } />
-      <PostComments post = {post} />
+      <PostComments post = {post} id = { id } />
     </div>
   );
 };
