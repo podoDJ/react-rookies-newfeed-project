@@ -2,13 +2,12 @@ import React, { useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { collection, getDocs, query } from "firebase/firestore";
 import { db } from "../../firebase";
-import { setProfile, setPhotoURL, setDisplayName, setProfileCmt } from "./ProfileActions";
-import { useNavigate } from "react-router-dom";
+import { setProfile, updatePhotoURL, setDisplayName, setProfileCmt } from "./ProfileActions";
 import { styled, css } from "styled-components";
 
 const Profile = () => {
   const user = useSelector((state) => state.logReducer.user);
-  const uid = user.uid;
+  const uid = user?.uid;
   const profile = useSelector((state) => state.profile.profile);
   const photoURL = useSelector((state) => state.profile.photoURL);
   const displayName = useSelector((state) => state.profile.displayName);
@@ -18,18 +17,20 @@ const Profile = () => {
   // console.log(user.uid);
   console.log("uid", uid);
 
-  const changeDisplayName = (e) => dispatch(setDisplayName(e.target.value));
-  const changeProfileCmt = (e) => dispatch(setProfileCmt(e.target.value));
   // useRef를 이용하여 input태그에 접근
   const imageFileInput = useRef();
-  // 이미지 업로드 버튼 클릭 시 이미지 파일 인품 태그에 클릭 이벤트 걸기
+  // 이미지 업로드 버튼 클릭 시 이미지 파일 인풋 태그에 클릭 이벤트 걸기
   const onClickImageFile = () => {
     imageFileInput.current.click();
   };
 
-  const changePhotoURL = (e) => {
+  const fileSelect = (e) => {
+    dispatch(updatePhotoURL(e.target.files[0]));
+  };
+
+  const changePhotoURL = async (e) => {
     const file = e.target.files[0];
-    dispatch(setPhotoURL(file, uid));
+    dispatch(updatePhotoURL(file, uid));
   };
 
   const updateDisplayName = (e) => {
@@ -42,27 +43,25 @@ const Profile = () => {
     dispatch(setProfileCmt(newProfileCmt, uid));
   };
 
-  const uploadPhotoURL = () => {
-    // photoURL을 업로드하는 액션 디스패치
-  };
-
   useEffect(() => {
-    const fetchData = async () => {
-      const q = query(collection(db, "profile"));
-      const querySnapshot = await getDocs(q);
-      const initialProfile = [];
-      querySnapshot.forEach((doc) => {
-        const data = {
-          id: doc.uid,
-          ...doc.data(),
-        };
-        console.log("data", data);
-        initialProfile.push(data);
-      });
-      dispatch(setProfile(initialProfile));
-    };
-    fetchData();
-  }, [uid]);
+    if (uid) {
+      const fetchData = async () => {
+        const q = query(collection(db, "profile"));
+        const querySnapshot = await getDocs(q);
+        const initialProfile = [];
+        querySnapshot.forEach((doc) => {
+          const data = {
+            id: doc.id,
+            ...doc.data(),
+          };
+          console.log("data", data);
+          initialProfile.push(data);
+        });
+        dispatch(setProfile(initialProfile));
+      };
+      fetchData();
+    }
+  }, []);
 
   return (
     <>
@@ -76,17 +75,18 @@ const Profile = () => {
                     <P.ProfileImage src={user.photoURL} alt="profile" />
                   </P.ProfileImageBox>
                   <P.ImageUploadBox>
-                    <input type="file" style={{ display: "none" }} ref={imageFileInput} />
-                    <P.Btns onChange={changePhotoURL} onClick={onClickImageFile}>
+                    <input type="file" style={{ display: "none" }} ref={imageFileInput} onChange={changePhotoURL} />
+                    <P.Btns onChange={fileSelect} onClick={onClickImageFile}>
                       이미지 업로드
                     </P.Btns>
-                    <P.Btns onClick={uploadPhotoURL}>프로필 사진 변경하기</P.Btns>
+                    <P.Btns onClick={changePhotoURL}>프로필 사진 변경하기</P.Btns>
                   </P.ImageUploadBox>
                 </P.ProfileImageWrap>
                 <P.ProfileBody>
                   <p>EMAIL : {user.email}</p>
                   <P.NameBox>
                     <p>NAME : {user.displayName}</p>
+                    <input type="text" value={displayName} onChange={updateDisplayName} />
                     {/* <p>좋아요 수 : {user.likes}</p> */}
                     <P.Btns size="medium" onClick={updateDisplayName}>
                       변경
