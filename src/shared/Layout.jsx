@@ -8,7 +8,11 @@ export default function Layout({ children }) {
   const isLogin = useSelector((state) => {
     return state.logReducer.isLogin;
   });
+<<<<<<< HEAD
   console.log(isLogin);
+=======
+
+>>>>>>> dev
   return (
     <StLayout>
       {isLogin ? <UserHeaderComp /> : <HeaderComp />}
