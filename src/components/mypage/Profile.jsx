@@ -13,7 +13,6 @@ const Profile = () => {
   const photoURL = useSelector((state) => state.profile.photoURL);
   const displayName = useSelector((state) => state.profile.displayName);
   const profileCmt = useSelector((state) => state.profile.profileCmt);
-  const navigate = useNavigate();
   const dispatch = useDispatch();
 
   // console.log(user.uid);
@@ -30,15 +29,17 @@ const Profile = () => {
 
   const changePhotoURL = (e) => {
     const file = e.target.files[0];
-    dispatch(setPhotoURL(file));
+    dispatch(setPhotoURL(file, uid));
   };
 
-  const updateDisplayName = () => {
-    // displayName을 업데이트하는 액션 디스패치
+  const updateDisplayName = (e) => {
+    const newDisplayName = e.target.value;
+    dispatch(setDisplayName(newDisplayName, uid));
   };
 
-  const updateProfileCmt = () => {
-    // profileCmt를 업데이트하는 액션 디스패치
+  const updateProfileCmt = (e) => {
+    const newProfileCmt = e.target.value;
+    dispatch(setProfileCmt(newProfileCmt, uid));
   };
 
   const uploadPhotoURL = () => {
@@ -48,9 +49,9 @@ const Profile = () => {
   useEffect(() => {
     const fetchData = async () => {
       const q = query(collection(db, "profile"));
-      const snapshot = await getDocs(q);
+      const querySnapshot = await getDocs(q);
       const initialProfile = [];
-      snapshot.forEach((doc) => {
+      querySnapshot.forEach((doc) => {
         const data = {
           id: doc.uid,
           ...doc.data(),
@@ -100,7 +101,7 @@ const Profile = () => {
                 </P.ProfileBody>
               </P.ProfileContainer>
               <P.Contents>
-                <P.ContentsTitle onClick={() => navigate("/post")}>내가 쓴 글</P.ContentsTitle>
+                <P.ContentsTitle>내가 쓴 글</P.ContentsTitle>
                 <P.ContentsTitle>방명록</P.ContentsTitle>
               </P.Contents>
               <P.contentsBody>게시글 연결은 어느세월에,,,</P.contentsBody>
