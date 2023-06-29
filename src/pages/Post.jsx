@@ -1,9 +1,14 @@
-import React from 'react'
+import React from "react";
+import PostList from "../components/post/PostList";
+import { Link } from "react-router-dom";
 
 const Post = () => {
   return (
-    <div>Post</div>
-  )
-}
+    <>
+    <Link to={"/postcreate"}>글 작성하기</Link>
+      <PostList />
+    </>
+  );
+};
 
-export default Post
+export default Post;

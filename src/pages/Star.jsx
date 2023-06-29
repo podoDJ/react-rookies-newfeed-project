@@ -1,9 +1,12 @@
-import React from 'react'
+import React from "react";
+import StarList from "../components/star/StarList";
 
 const Star = () => {
   return (
-    <div>Star</div>
-  )
-}
+    <>
+      <StarList />
+    </>
+  );
+};
 
-export default Star
+export default Star;

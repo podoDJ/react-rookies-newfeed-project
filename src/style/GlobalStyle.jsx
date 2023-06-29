@@ -1,9 +1,18 @@
-import React from 'react'
+import { createGlobalStyle } from "styled-components";
 
-export default function GlobalStyle() {
-  return (
-    <div>
-      
-    </div>
-  )
+const GlobalStyle = createGlobalStyle`
+
+:root {
+  --color-bg: #FFF4E0;
+  --color-text: #4D4D4D;
+  --color-accent: #B46060;
+  --color-box: #FFBF9B;
+  --color-white: #FEFEFE;
 }
+
+  body {
+    background-color: var(--color-bg);
+  }
+`;
+
+export default GlobalStyle;
