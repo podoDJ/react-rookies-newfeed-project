@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { collection, doc, getDoc, getDocs, query, updateDoc, where } from "firebase/firestore";
+import { collection, getDocs, query, updateDoc, where } from "firebase/firestore";
+
 import { styled } from "styled-components";
 import { BiSolidLike } from "react-icons/bi";
 import { db } from "../../firebase";
@@ -32,11 +33,6 @@ export default function StarList() {
   const updateLikeHandler = async (uid, likes, isLiked) => {
     const q = query(collection(db, "starList"), where("uid", "==", uid));
     const starListRef = await getDocs(q);
-    // console.log(starListRef);
-
-    console.log("1", starListRef.docs[0].ref);
-    // 업데이트할 문서를 참조
-    // const starListRef = doc(db, "starList", uid);
 
     // 좋아요 수와 isLiked 상태를 업데이트
     await updateDoc(starListRef.docs[0].ref, {
