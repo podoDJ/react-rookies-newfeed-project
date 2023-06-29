@@ -3,6 +3,7 @@ const initialState = {
   photoURL: "",
   displayName: "",
   profileCmt: "",
+  uid: null,
 };
 
 const profileReducer = (state = initialState, action) => {

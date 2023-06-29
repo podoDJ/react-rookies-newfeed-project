@@ -1,6 +1,10 @@
+import shortid from "shortid";
+import { db } from "../../firebase";
+import { collection, getDocs, query } from "firebase/firestore";
+
 //action value
-const SHOW_POSTS = "SHOW_POSTS";
 const SORT_LIKE_POSTS = "SORT_LIKE_POSTS";
+const SHOW_POSTS = "SHOW_POSTS";
 
 //action creater
 export const showPosts = (payload) => {
@@ -17,7 +21,10 @@ export const sortLikePosts = (payload) => {
   };
 };
 
+// initial state
 let newArr = [];
+
+//fetchData().then(() => {}).catch((error) => {console.log("데이터를 수신 오류", error)})
 
 const posts = (state = newArr, action) => {
   switch (action.type) {

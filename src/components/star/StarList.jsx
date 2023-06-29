@@ -1,28 +1,38 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { collection, getDocs, query, runTransaction, updateDoc, where } from "firebase/firestore";
+import { collection, getDocs, query, updateDoc, where } from "firebase/firestore";
+
 import { styled } from "styled-components";
 import { BiSolidLike } from "react-icons/bi";
 import { db } from "../../firebase";
-import { useDispatch, useSelector } from "react-redux";
-import { showMembers } from "../../redux/modules/logReducer";
 // import InfiniteScroll from "react-infinite-scroll-component";
 
 export default function StarList() {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
-
-  const starList = useSelector((state) => state.logReducer.members);
+  const [starList, setStarList] = useState([]);
 
   useEffect(() => {
-    dispatch(showMembers(starList));
-  }, []);
+    const fetchData = async () => {
+      // q = 요청 객체
+      const q = query(collection(db, "starList"));
+      const querySnapshot = await getDocs(q);
+      const initialStarList = [];
+      querySnapshot.forEach((doc) => {
+        const data = {
+          id: doc.id,
+          ...doc.data(),
+        };
+        initialStarList.push(data);
+      });
+      setStarList(initialStarList);
+    };
+
+    fetchData();
+  }, [setStarList]);
 
   const updateLikeHandler = async (uid, likes, isLiked) => {
-    // where()함수는 쿼리에 필터를 추가하기 위해 사용된다.
     const q = query(collection(db, "starList"), where("uid", "==", uid));
     const starListRef = await getDocs(q);
-    // console.log("1", starListRef.docs[0].ref);
 
     // 좋아요 수와 isLiked 상태를 업데이트
     await updateDoc(starListRef.docs[0].ref, {
@@ -30,8 +40,8 @@ export default function StarList() {
       isLiked: !isLiked,
     });
 
-    const newStarList = starList.map((prevStar) => (prevStar.uid === uid ? { ...prevStar, likes: isLiked ? prevStar.likes - 1 : prevStar.likes + 1, isLiked: !prevStar.isLiked } : prevStar));
-    dispatch(showMembers(newStarList));
+    // starList 상태 업데이트
+    setStarList((prevStarList) => prevStarList.map((star) => (star.id === uid ? { ...star, isLiked: !isLiked } : star)));
   };
 
   return (
@@ -40,20 +50,9 @@ export default function StarList() {
       <Container>
         {starList.map((star) => {
           return (
-            <Profile key={star.uid} onClick={() => navigate(`/star/members/${star.uid} `)}>
+            <Profile key={star.uid} onClick={() => navigate(`/star/members/${star.uid}`)}>
               <LikesWrapper>
-                <LikeBtn
-                  onClick={(e) => {
-                    // 프로필 클릭 이벤트 전파 방지
-                    e.stopPropagation();
-                    if (star.uid) {
-                      updateLikeHandler(star.uid, star.likes, star.isLiked);
-                    }
-                  }}
-                  isLiked={star.isLiked}
-                  // uid가 없는 경우 버튼 비활성화
-                  disabled={!star.uid}
-                >
+                <LikeBtn onClick={() => updateLikeHandler(star.uid, star.likes, star.isLiked)} isLiked={star.isLiked}>
                   <BiSolidLike size={25} />
                 </LikeBtn>
                 <p>{star.likes || 0}</p>

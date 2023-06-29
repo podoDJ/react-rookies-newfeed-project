@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import { deleteDoc, doc, updateDoc } from "firebase/firestore";
+import { deleteDoc, doc } from "firebase/firestore";
 import { db } from "../../firebase";
 import { styled } from "styled-components";
 
@@ -13,7 +13,6 @@ const PostDetailBrowse = () => {
 
   const { id } = useParams(); // id === documentId
   const posts = useSelector((state) => state.posts);
-  console.log("post.postId check0 => ", posts);
   const post = posts.filter((post) => post.postId === id)[0];
   const [updatedPostWhoLiked, setUpdatedPostWhoLiked] = useState(post?.postWhoLiked || []);
 
@@ -60,11 +59,9 @@ const PostDetailBrowse = () => {
       });
     }
   };
+
   return (
     <S.PostDetailBox>
-      <div>
-        <span onClick={updateLike}>👍{post?.postWhoLiked?.length || 0}</span>
-      </div>
       <p>{post.postId}</p>
       <p>{post.postTitle}</p>
       <p>{post.postBody}</p>
@@ -94,7 +91,9 @@ const PostDetailBrowse = () => {
         삭제하기
       </button>
       <Link to={`/postupdate/${post.postId}`}>
-        <button>수정하기</button>
+      <button>
+        수정하기
+      </button>
       </Link>
     </S.PostDetailBox>
   );
@@ -107,5 +106,5 @@ const S = {
     border: 1px solid black;
     margin: 10px;
     padding: 10px;
-  `,
-};
+  `
+}

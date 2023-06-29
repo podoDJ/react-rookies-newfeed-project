@@ -18,12 +18,8 @@ import PostUpdate from "../pages/PostUpdate";
 //진솔 추가
 import { onAuthStateChanged } from "firebase/auth";
 import { useDispatch } from "react-redux";
-import { showMembers, showUser, sortLikeMembers } from "../redux/modules/logReducer";
-import { auth, db } from "../firebase";
-
-import { useEffect } from "react";
-import { collection, getDocs, query } from "@firebase/firestore";
-import { showPosts, sortLikePosts } from "../redux/modules/postWrite";
+import { logChange, showUser } from "../redux/modules/logReducer";
+import { auth } from "../firebase";
 
 const Router = () => {
   const dispatch = useDispatch();
@@ -31,37 +27,12 @@ const Router = () => {
   onAuthStateChanged(auth, (user) => {
     if (user) {
       dispatch(showUser(user));
-      // dispatch(logChange(true));
-    } else return;
+      dispatch(logChange(true));
+    } else {
+      // User is signed out
+      dispatch(logChange(false));
+    }
   });
-  useEffect(() => {
-    const newArr = [];
-    const fetchPostsData = async () => {
-      const q = query(collection(db, "posts"));
-      const querySnapshot = await getDocs(q);
-      querySnapshot.forEach((doc) => {
-        newArr.push({ id: doc.id, ...doc.data() });
-      });
-      dispatch(showPosts(newArr));
-    };
-    fetchPostsData();
-
-    const fetchMemberData = async () => {
-      // q = 요청 객체
-      const q = query(collection(db, "starList"));
-      const querySnapshot = await getDocs(q);
-      const initialStarList = [];
-      querySnapshot.forEach((doc) => {
-        const data = {
-          id: doc.id,
-          ...doc.data(),
-        };
-        initialStarList.push(data);
-      });
-      dispatch(showMembers(initialStarList));
-    };
-    fetchMemberData();
-  }, []);
 
   return (
     <>
