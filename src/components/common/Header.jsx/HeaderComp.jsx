@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 import { styled } from "styled-components";
 import { auth } from "../../../firebase";
 import { signOut } from "firebase/auth";
-import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { logChange } from "../../../redux/modules/logReducer";
 
@@ -33,11 +32,6 @@ export const UserHeaderComp = () => {
     await signOut(auth);
     dispatch(logChange(false));
   };
-
-  const user = useSelector((state) => {
-    return state.logReducer.user;
-  });
-  console.log("sssss", user);
   return (
     <S.Header>
       <S.HeaderMenuDiv>
@@ -48,7 +42,7 @@ export const UserHeaderComp = () => {
       </S.HeaderMenuDiv>
       <S.HeaderMenuDiv>
         <S.HeaderMenu onClick={logOutFunc}>Log Out</S.HeaderMenu>
-        <S.Img src={user.photoURL ? user.photoURL : "https://yozm.wishket.com/static/img/default_avatar.png"} />
+        <S.HeaderMenu>Profile</S.HeaderMenu>
       </S.HeaderMenuDiv>
     </S.Header>
   );
@@ -67,19 +61,11 @@ const S = {
   HeaderMenuDiv: styled.div`
     display: flex;
     align-items: center;
-    margin: 0 10px;
   `,
   HeaderMenu: styled.span`
     font-size: 25px;
     font-weight: 600;
     margin: 0 15px;
     cursor: pointer;
-  `,
-  Img: styled.img`
-    background-color: white;
-    width: 50px;
-    height: 50px;
-    border-radius: 100%;
-    margin-left: 10px;
   `,
 };
