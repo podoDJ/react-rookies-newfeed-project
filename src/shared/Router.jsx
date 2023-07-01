@@ -110,7 +110,6 @@ const Router = () => {
             <Route path="/postupdate/:id" element={<PostUpdate />} />
             <Route path="/star/members/:id/guestbook" element={<StarDetail />} />
             <Route path="/star" element={<Star />} />
-            <Route path="/about" element={<About />} />
             <Route path="/post/commentup/:id" element={<PostCommentUpdata />} />
             <Route path="/mypage" element={<Mypage />} />
           </Routes>

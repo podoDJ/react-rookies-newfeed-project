@@ -212,6 +212,7 @@ const PostForm = () => {
             취소
           </S.PostBtn>
         </S.PostBtnCtn>
+        {openModal ? <PreviewModal photoURL={photoURL} setOpenModal={setOpenModal} setPhotoURL={setPhotoURL} selectedFile={selectedFile} /> : null}
       </S.PostForm>
     </>
   );

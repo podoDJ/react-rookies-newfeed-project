@@ -32,13 +32,12 @@ const PostList = () => {
               {/* <S.PostingBody>{post.display}</S.PostingBody> */}
               <S.PostingBody>작성자</S.PostingBody>
               {/* <p>uid: {post.uid}</p> */}
-              <div style={{ display: "flex", justifyContent: "center" }}>
+              <S.PostingDateLikeBox>
                 <p style={{ marginRight: "20px" }}> {post.postDate.slice(0, 11)}</p>
                 <S.PostingLike>
-                  {" "}
-                  <BiSolidLike size={20} style={{ color: "#b46060" }} /> {post.postWhoLiked?.length || 0}
+                  <BiSolidLike size={20} style={{ color: "#b46060", marginRight: "5px"}} /> <span style={{marginRight: "3px"}}>{post.postWhoLiked?.length || 0}</span>
                 </S.PostingLike>
-              </div>
+              </S.PostingDateLikeBox>
             </S.PostingBox>
           );
         })}
@@ -57,6 +56,7 @@ const S = {
     color: #4d4d4d;
     text-align: center;
   `,
+
   PostWriteBox: styled.div`
     background-color: white;
     width: 92.5%;
@@ -71,12 +71,14 @@ const S = {
     -moz-box-shadow: 7px 5px 23px -9px rgba(0, 0, 0, 0.3);
     cursor: pointer;
   `,
+
   PostWriteBoxCnt: styled.span`
     font-size: 23px;
     font-weight: 500;
     color: #4d4d4d;
     margin: 10px;
   `,
+
   PostingBoxCtn: styled.div`
     display: flex;
     flex-wrap: wrap;
@@ -113,6 +115,14 @@ const S = {
     font-weight: bold;
     padding: 20px;
   `,
+
+  PostingDateLikeBox: styled.div`
+    display: flex;
+    flex-direction: row;
+    float: right;
+    gap: 30px;
+  `,
+
   PostingBody: styled.p`
     padding-bottom: 10px;
   `,
