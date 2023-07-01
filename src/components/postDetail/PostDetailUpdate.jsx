@@ -126,7 +126,7 @@ const S = {
     color: #4d4d4d;
     width: 500px;
     height: 700px;
-    margin: auto;
+    margin: 10px auto;
     padding: 50px;
     border-radius: 20px;
     flex-direction: column;
