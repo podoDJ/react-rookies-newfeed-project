@@ -12,6 +12,20 @@ export default function StarList() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
+  // // ---- 제이 추가
+
+  // const getMembers = async () => {
+  //   const q = query(collection(db, "members"));
+  //   const querySnapshot = await getDocs(q);
+
+  //   const result = querySnapshot.docs.map((x) => x.data());
+
+  //   dispatch(showMembers(result));
+  // };
+
+  // getMembers();
+  // // 제이 추가 ----
+
   const starList = useSelector((state) => state.logReducer.members);
 
   useEffect(() => {
