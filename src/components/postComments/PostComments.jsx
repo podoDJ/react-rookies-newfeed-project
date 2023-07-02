@@ -11,7 +11,6 @@ const PostComments = ({ post, id }) => {
   const uid = useSelector((state) => state.logReducer.user.uid);
   //2023-07-02 22:23 동준 commentUser 추가(댓글 작성자)
   const commentUser = useSelector((state) => state.logReducer.user.displayName);
-  console.log("commentUser",commentUser)
   const comments = useSelector((state) => {
     return state.comment;
   });
@@ -19,6 +18,15 @@ const PostComments = ({ post, id }) => {
   const dispatch = useDispatch();
   const [comment, setComment] = useState("");
   const [upDataCommentId, setUpDataCommentId] = useState("");
+
+  //임시방편 패치 : 새로 작성한 글에 작성자가 바로 댓글을 달 때 렌더링이 되지 않아 표시되지 않는 이슈가 있었음. 
+  //일단 useState와 useDispatch의 의존성배열에 on/off트리거로 임시패치 해 놓음. useEffect와 Redux에 대한 공부가 필요.
+   
+  const [trigger, setTrigger] = useState(false)
+  const triggerOnOff = () => {
+    console.log("trigger==>",trigger)
+    setTrigger((prev)=>!prev)
+  }
   const closeModal = () => {
     setUpDataCommentId(false);
   };
@@ -33,7 +41,7 @@ const PostComments = ({ post, id }) => {
       dispatch(baseComment(abc));
     };
     fetchData();
-  }, [dispatch]);
+  }, [dispatch, trigger]);
   const isOpen = comment.userId !== uid;
   return (
     <>
@@ -42,6 +50,7 @@ const PostComments = ({ post, id }) => {
         <StForm
           onSubmit={async (e) => {
             e.preventDefault();
+            
             if (!comment) {
               alert("내용을 추가해주세요");
               return false;
@@ -63,6 +72,7 @@ const PostComments = ({ post, id }) => {
                 comment,
               },
             });
+            triggerOnOff()
           }}
         >
           <StinputText
@@ -104,9 +114,8 @@ const PostComments = ({ post, id }) => {
                     >
                       삭제
                     </StDeleteBtn>
-                    
                   )}
-                  
+
                   <StComment>{comment.comment}</StComment>
                 </StCommentList>
 
@@ -261,5 +270,4 @@ const StCmtUser = styled.div`
   color: #6e6e6ec4;
   text-align: right;
   margin-right: 30px;
-  
-`
+`;
