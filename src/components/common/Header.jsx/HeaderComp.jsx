@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { styled } from "styled-components";
 import { auth } from "../../../firebase";
@@ -9,18 +9,70 @@ import honcook from "../../../assets/images/honcook.png";
 export const HeaderComp = () => {
   const navigate = useNavigate();
 
+  // 메뉴바 클릭시 하단 그림자 유지(sessionStorage)
+  const clickedMenuArray = sessionStorage.getItem("clickedMenus") ? JSON.parse(sessionStorage.getItem("clickedMenus")) : ["LOGO"];
+  const addItem = (event) => {
+    clickedMenuArray.push(event.target.id);
+    sessionStorage.setItem("clickedMenus", JSON.stringify(clickedMenuArray));
+  };
+  const clickedNow = clickedMenuArray.at(-1);
+  console.log("clickedNow=>", clickedNow);
+
   return (
     <S.Header>
       <S.HeaderMenuDiv>
-        <S.HeaderMenu onClick={() => navigate("/")}>
+        <S.HeaderMenu
+          id="LOGO"
+          clickedNow={clickedNow}
+          onClick={(event) => {
+            addItem(event);
+            navigate("/");
+          }}
+        >
           <S.Logo src={honcook} alt="logo" />
         </S.HeaderMenu>
-        <S.HeaderMenu onClick={() => navigate("/post")}>POST</S.HeaderMenu>
-        <S.HeaderMenu onClick={() => navigate("/star")}>MEMBER</S.HeaderMenu>
+        <S.HeaderMenu
+          id="POST"
+          propid={"POST"}
+          clickedNow={clickedNow}
+          onClick={(event) => {
+            addItem(event);
+            navigate("/post");
+          }}
+        >
+          POST
+        </S.HeaderMenu>
+        <S.HeaderMenu
+          id="MEMBER"
+          propid={"MEMBER"}
+          clickedNow={clickedNow}
+          onClick={(event) => {
+            addItem(event);
+            navigate("/star");
+          }}
+        >
+          MEMBER
+        </S.HeaderMenu>
       </S.HeaderMenuDiv>
       <S.HeaderMenuDiv>
-        <S.HeaderSubMenu onClick={() => navigate("/login")}>Log In</S.HeaderSubMenu>
-        <S.HeaderSubMenu onClick={() => navigate("/signup")}>Sign Up</S.HeaderSubMenu>
+        <S.HeaderSubMenu
+          id="LOG IN"
+          onClick={(event) => {
+            addItem(event);
+            navigate("/login");
+          }}
+        >
+          Log In
+        </S.HeaderSubMenu>
+        <S.HeaderSubMenu
+          id="SIGN UP"
+          onClick={(event) => {
+            addItem(event);
+            navigate("/signup");
+          }}
+        >
+          Sign Up
+        </S.HeaderSubMenu>
       </S.HeaderMenuDiv>
     </S.Header>
   );
@@ -28,6 +80,14 @@ export const HeaderComp = () => {
 
 export const UserHeaderComp = () => {
   const navigate = useNavigate();
+  // 메뉴바 클릭시 하단 그림자 유지(sessionStorage)
+  const clickedMenuArray = sessionStorage.getItem("clickedMenus") ? JSON.parse(sessionStorage.getItem("clickedMenus")) : ["LOGO"];
+  const addItem = (event) => {
+    clickedMenuArray.push(event.target.id);
+    sessionStorage.setItem("clickedMenus", JSON.stringify(clickedMenuArray));
+  };
+  const clickedNow = clickedMenuArray.at(-1);
+  console.log("clickedNow=>", clickedNow);
 
   const logOutFunc = async () => {
     await signOut(auth);
@@ -49,17 +109,70 @@ export const UserHeaderComp = () => {
   return (
     <S.Header>
       <S.HeaderMenuDiv>
-        <S.HeaderMenu onClick={() => navigate("/")}>
+        <S.HeaderMenu
+          id="LOGO"
+          clickedNow={clickedNow}
+          onClick={(event) => {
+            addItem(event);
+            navigate("/");
+          }}
+        >
           <S.Logo src={honcook} alt="logo" />
         </S.HeaderMenu>
-        <S.HeaderMenu onClick={() => navigate("/post")}>POST</S.HeaderMenu>
-        <S.HeaderMenu onClick={() => navigate("/star")}>MEMBER</S.HeaderMenu>
-        <S.HeaderMenu onClick={() => navigate("/mypage")}>PROFILE</S.HeaderMenu>
+        <S.HeaderMenu
+          id="POST"
+          propid={"POST"}
+          clickedNow={clickedNow}
+          onClick={(event) => {
+            addItem(event);
+            navigate("/post");
+          }}
+        >
+          POST
+        </S.HeaderMenu>
+        <S.HeaderMenu
+          id="MEMBER"
+          propid={"MEMBER"}
+          clickedNow={clickedNow}
+          onClick={(event) => {
+            addItem(event);
+            navigate("/star");
+          }}
+        >
+          MEMBER
+        </S.HeaderMenu>
+        <S.HeaderMenu
+          id="PROFILE"
+          propid={"PROFILE"}
+          clickedNow={clickedNow}
+          onClick={(event) => {
+            addItem(event);
+            navigate("/mypage");
+          }}
+        >
+          PROFILE
+        </S.HeaderMenu>
+
         {/* 마이페이지 경로 수정 - 제이 */}
       </S.HeaderMenuDiv>
       <S.HeaderMenuDiv>
-        <S.HeaderSubMenu onClick={logOutFunc}>Log Out</S.HeaderSubMenu>
-        <S.Img src={currentUser[0]?.photoURL ? currentUser[0].photoURL : "https://i.pinimg.com/originals/99/f3/06/99f3068e425e6b9f56d683b0859ee942.jpg"} onClick={() => navigate("/mypage")} />
+        <S.HeaderSubMenu
+          id="LOG OUT"
+          onClick={(event) => {
+            addItem(event);
+            logOutFunc();
+          }}
+        >
+          Log Out
+        </S.HeaderSubMenu>
+        <S.Img
+          id="PROFILE IMG"
+          src={currentUser[0]?.photoURL ? currentUser[0].photoURL : "https://i.pinimg.com/originals/99/f3/06/99f3068e425e6b9f56d683b0859ee942.jpg"}
+          onClick={(event) => {
+            addItem(event);
+            navigate("/mypage");
+          }}
+        />
       </S.HeaderMenuDiv>
     </S.Header>
   );
@@ -92,12 +205,10 @@ const S = {
     display: flex;
     align-items: center;
     padding: 0 15px;
+    box-shadow: ${(props) => (props.propid === props.clickedNow ? "inset 0px -13px 10px -6px #f9d7c5" : "none")};
     &:hover {
-      box-shadow: inset 0px -13px 5px -6px #f9d7c5;
-      transition-duration: 100ms;
-    }
-    &:active {
-      box-shadow: inset 0px -13px 5px -6px #f9d7c5;
+      box-shadow: inset 0px -13px 10px -6px #f9d7c5;
+      transition-duration: 200ms;
     }
   `,
   HeaderSubMenu: styled.span`
@@ -114,9 +225,6 @@ const S = {
     &:hover {
       box-shadow: inset 0px -13px 5px -6px #f9d7c5;
       transition-duration: 100ms;
-    }
-    &:active {
-      box-shadow: inset 0px -13px 5px -6px #f9d7c5;
     }
   `,
 

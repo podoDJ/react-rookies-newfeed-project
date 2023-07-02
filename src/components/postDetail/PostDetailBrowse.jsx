@@ -7,6 +7,7 @@ import { styled } from "styled-components";
 import { deletePosts, updatePostsLike } from "../../redux/modules/postWrite";
 import { BiSolidLike } from "react-icons/bi";
 
+//"Pages" dir => PostDetail.jsx props
 const PostDetailBrowse = ({ post, id }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -99,7 +100,7 @@ const S = {
   PostDetailBox: styled.div`
     position: relative;
     width: 800px;
-    height: 450px;
+    height: 470px;
     padding: 20px;
     border: none;
     border-radius: 5px;
@@ -134,7 +135,8 @@ const S = {
 
   PostDetailLike: styled.div`
     position: absolute;
-    top: 165px;
+    z-index: 1;
+    top: 180px;
     right: 430px;
     display: flex;
     align-items: center;
@@ -195,67 +197,44 @@ const S = {
   `,
 
   PostImg: styled.img`
+    position: absolute;
+    bottom: 0;
     width: 400px;
-    height: 300px;
+    height: 320px;
     max-width: 100%;
     max-height: 100%;
     padding: 20px 0px;
+    margin-bottom: 5;
   `,
 
   Body: styled.div`
     position: absolute;
-    top: 170px;
+    bottom: 0px;
     right: 20px;
+    margin-bottom: 5px;
   `,
 
   Label: styled.h3`
     color: #333;
     font-size: 18px;
     font-weight: bold;
-    margin-bottom: 8px;
-    padding: 8px;
+    margin-bottom: 1px;
+    padding: 5px;
   `,
 
   Text: styled.p`
     background-color: #f7f7f7;
     color: #666;
     font-size: 16px;
-    margin-bottom: 16px;
+    margin-bottom: 10px;
     padding: 8px 20px;
     width: 340px;
-    height: 20px;
+    height: 60px;
     border-radius: 10px;
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
   `,
 
-  // PostDetailBox: styled.div`
-  //   border: 1px solid black;
-  //   margin: 10px;
-  //   padding: 10px;
-  // `,
   PostBtnCtn: styled.div`
     display: ${(props) => (props.uid === props.postuid ? "flex" : "none")};
   `,
-  // Btn: styled.button`
-  //   width: 200px;
-  //   height: 40px;
-  //   color: white;
-  //   background-color: #b46060;
-  //   border-color: transparent;
-  //   border-radius: 10px;
-  //   margin-top: ${(props) => (props.marginTop ? props.marginTop : "30px")};
-  //   cursor: pointer;
-  // `,
-  // PostImg: styled.img`
-  //   display: ${(props) => (props.photoURL ? "flex" : "none")};
-  // `,
-  // PostDetailLike: styled.div`
-  //   width: 5%;
-  //   float: right;
-  //   display: flex;
-  //   align-items: center;
-  //   justify-content: end;
-  //   gap: 7px;
-  //   font-size: 25px;
-  // `,
 };

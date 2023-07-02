@@ -59,12 +59,10 @@ const FileForm = ({ handleUpload, handleFileSelect, photoURL }) => {
 };
 
 const PostForm = () => {
-  //uid는 여기서 가져옵니다.
+  //uid get
   const user = useSelector((state) => state.logReducer.user);
-
-  // const postLike = 0
   const postWhoLiked = [];
-  //========================오늘 날짜 불러오는 함수==============================//
+  //Posting Date===
   const today = new Date(); // 현재 날짜와 시간을 가져옴
   const year = today.getFullYear(); // 연도를 가져옴
   const month = String(today.getMonth() + 1).padStart(2, "0"); // 월을 가져오고, 한 자리 수인 경우 앞에 0을 추가
@@ -74,7 +72,7 @@ const PostForm = () => {
   const seconds = String(today.getSeconds()).padStart(2, "0");
 
   const postDate = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`; // 연도, 월, 일을 조합하여 날짜 문자열 생성
-  //========================오늘 날짜 불러오는 함수==============================//
+  //===============
   const [postTitle, setPostTitle] = useState("");
   const [postBody, setPostBody] = useState("");
   const [postIngredient, setPostIngredient] = useState("");
@@ -142,6 +140,38 @@ const PostForm = () => {
       navigate(`/post/${docRef.id}`);
     } else if (!photoURL) alert("이미지가 업로드 되지 않았습니다.\n이미지 선택 후 업로드 버튼을 클릭해주세요!");
   };
+
+  //최대 글자수 제한
+  const MAX_TITLE_LENGTH = 15;
+  const titleLimit = (event) => {
+    event.target.value.length <= MAX_TITLE_LENGTH ? setPostTitle(event.target.value) : alert(`글자수 제한 ${MAX_TITLE_LENGTH}자 입니다.`);
+  };
+  const MAX_LENGTH = 80;
+  const inputLimit = (event) => {
+    const inputName = event.target.name;
+    const inputValue = event.target.value;
+    const limitAlert = (inputValue, setInputValue) => {
+      if (inputValue.length <= MAX_LENGTH) {
+        setInputValue(inputValue);
+      } else {
+        alert(`글자수 제한 ${MAX_LENGTH}자 입니다.`);
+      }
+    };
+    switch (inputName) {
+      case "postBody":
+        limitAlert(inputValue, setPostBody);
+        break;
+      case "postIngredient":
+        limitAlert(inputValue, setPostIngredient);
+        break;
+      case "postRecipe":
+        limitAlert(inputValue, setPostRecipe);
+        break;
+      default:
+        return;
+    }
+  };
+
   return (
     <>
       <S.PostForm onSubmit={handleSubmit}>
@@ -153,7 +183,7 @@ const PostForm = () => {
               name="postTitle"
               value={postTitle}
               onChange={(event) => {
-                setPostTitle(event.target.value);
+                titleLimit(event);
               }}
             />
           </div>
@@ -165,7 +195,7 @@ const PostForm = () => {
               name="postBody"
               value={postBody}
               onChange={(event) => {
-                setPostBody(event.target.value);
+                inputLimit(event);
               }}
             />
           </div>
@@ -177,7 +207,7 @@ const PostForm = () => {
               name="postIngredient"
               value={postIngredient}
               onChange={(event) => {
-                setPostIngredient(event.target.value);
+                inputLimit(event);
               }}
             />
           </div>
@@ -189,7 +219,7 @@ const PostForm = () => {
               name="postRecipe"
               value={postRecipe}
               onChange={(event) => {
-                setPostRecipe(event.target.value);
+                inputLimit(event);
               }}
             />
           </div>
@@ -198,7 +228,6 @@ const PostForm = () => {
             <FileForm photoURL={photoURL} handleUpload={handleUpload} handleFileSelect={handleFileSelect} />
           </div>
           {openModal ? <PreviewModal photoURL={photoURL} setOpenModal={setOpenModal} setPhotoURL={setPhotoURL} selectedFile={selectedFile} /> : null}
-
         </div>
 
         <S.PostBtnCtn>
