@@ -9,7 +9,7 @@ import CommentChange from "./CommentChange";
 
 const PostComments = ({ post, id }) => {
   const uid = useSelector((state) => state.logReducer.user.uid);
-
+  const [upDataCommentId, setUpDataCommentId] = useState("");
   const comments = useSelector((state) => {
     return state.comment;
   });
@@ -17,12 +17,9 @@ const PostComments = ({ post, id }) => {
   const dispatch = useDispatch();
 
   const [comment, setComment] = useState("");
-  const [isModal, setIsModal] = useState(false);
-  const openModal = () => {
-    setIsModal(true);
-  };
+
   const closeModal = () => {
-    setIsModal(false);
+    setUpDataCommentId(false);
   };
   // 함수의 리턴값 const abc  = (a)=> return a+1  abc(1) const b = abc(1512341)
   useEffect(() => {
@@ -85,11 +82,11 @@ const PostComments = ({ post, id }) => {
           })
           .map((comment) => {
             const isOpen = comment.userId === uid;
-
+            const isModal = comment.commentId === upDataCommentId;
             return (
               <Stlist key={comment.commentId}>
                 <StCommentList>
-                  {isOpen && <StUpdatebtn onClick={openModal}>수정</StUpdatebtn>}
+                  {isOpen && <StUpdatebtn onClick={() => setUpDataCommentId(comment.commentId)}>수정</StUpdatebtn>}
                   {isOpen && (
                     <StDeleteBtn
                       onClick={async () => {
@@ -263,10 +260,23 @@ const StModalBox = styled.div`
   color: var(--color-text);
 `;
 
+// const StModalBox = styled.div`
+//   position: fixed;
+//   top: 0;
+//   left: 0;
+//   width: 100%;
+//   height: 100%;
+//   background-color: rgba(0, 0, 0, 0);
+//   display: flex;
+//   align-items: center;
+//   justify-content: center;
+//   color: var(--color-text);
+// `;
+
 const StModalContents = styled.div`
-  background-color: #fff;
+  background-color: var(--color-bg);
   padding: 20px;
-  width: 15%;
-  height: 10%;
-  border-radius: 12px;
+  width: 30%;
+  height: 20%;
+  border-radius: 8px;
 `;

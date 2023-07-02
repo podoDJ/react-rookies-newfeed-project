@@ -7,13 +7,15 @@ import { doc, updateDoc } from "@firebase/firestore";
 import { UPDATE_COMMENT } from "../../redux/modules/comment";
 import { styled } from "styled-components";
 
-const CommentChange = ({ commentId, closeModal }) => {
+const CommentChange = ({ closeModal, commentId }) => {
   const navigate = useNavigate();
   const { id } = useParams;
   const [upComment, setUpComment] = useState();
-
+  console.log("=>>>>..", commentId);
   const comments = useSelector((state) => state.comment);
+
   const comment = comments.find((comment) => comment.commentId === commentId);
+
   const dispatch = useDispatch();
 
   return (
@@ -34,7 +36,7 @@ const CommentChange = ({ commentId, closeModal }) => {
             payload: {
               comment: upComment,
               postId: id,
-              commentId,
+              commentId: comment.commentId,
             },
           });
         }}
@@ -69,8 +71,18 @@ const StUpInput = styled.input`
   border-radius: 3px;
 `;
 
+// const StUpInput = styled.input`
+//   top: 10px;
+//   left: 25px;
+//   width: 90%;
+//   height: 40px;
+//   padding: 15px;
+//   background-color: var(--color-bg);
+//   border: 1px solid rgba(77, 77, 77, 0.796);
+//   border-radius: 3px;
+// `;
+
 const STUpBtn = styled.button`
-  position: absolute;
   top: 55px;
   right: 65px;
   color: #a8a7a7c4;
@@ -85,7 +97,6 @@ const STUpBtn = styled.button`
 `;
 
 const STDeBtn = styled.button`
-  position: absolute;
   top: 55px;
   right: 30px;
   color: #a8a7a7c4;
