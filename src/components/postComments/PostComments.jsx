@@ -5,22 +5,24 @@ import { addDoc, collection, deleteDoc, doc, getDocs, query, setDoc } from "fire
 import { db } from "../../firebase";
 import { Await, Link } from "react-router-dom";
 import { styled } from "styled-components";
+import CommentChange from "./CommentChange";
 
 const PostComments = ({ post, id }) => {
   const uid = useSelector((state) => state.logReducer.user.uid);
-  const [upDataCommentId, setUpDataCommentId] = useState("");
+  //2023-07-02 22:23 동준 commentUser 추가(댓글 작성자)
+  const commentUser = useSelector((state) => state.logReducer.user.displayName);
+  console.log("commentUser",commentUser)
   const comments = useSelector((state) => {
     return state.comment;
   });
 
   const dispatch = useDispatch();
-  const [title, setTitle] = useState("");
   const [comment, setComment] = useState("");
-
+  const [upDataCommentId, setUpDataCommentId] = useState("");
   const closeModal = () => {
     setUpDataCommentId(false);
   };
-  // 함수의 리턴값 const abc  = (a)=> return a+1  abc(1) const b = abc(1512341)
+
   useEffect(() => {
     const fetchData = async () => {
       const q = query(collection(db, "comments"));
@@ -48,15 +50,16 @@ const PostComments = ({ post, id }) => {
             const collectionRef = collection(db, "comments");
             const docRef = await addDoc(collectionRef, { comment });
             const commentDocRef = doc(db, "comments", docRef.id);
-            await setDoc(commentDocRef, { commentId: docRef.id, postId: id, userId: uid }, { merge: true });
+            await setDoc(commentDocRef, { commentId: docRef.id, postId: id, userId: uid, commentUser: commentUser }, { merge: true });
 
             dispatch({
               type: ADD_COMMENT,
               payload: {
                 postId: post.id,
                 userId: uid,
+                //2023-07-02 22:23 동준 commentUser 추가(댓글 작성자)
+                commentUser: commentUser,
                 commentId: docRef.id,
-
                 comment,
               },
             });
@@ -84,6 +87,7 @@ const PostComments = ({ post, id }) => {
             const isModal = comment.commentId === upDataCommentId;
             return (
               <Stlist key={comment.commentId}>
+                <StCmtUser>{comment.commentUser}</StCmtUser>
                 <StCommentList>
                   {isOpen && <StUpdatebtn onClick={() => setUpDataCommentId(comment.commentId)}>수정</StUpdatebtn>}
                   {isOpen && (
@@ -100,7 +104,9 @@ const PostComments = ({ post, id }) => {
                     >
                       삭제
                     </StDeleteBtn>
+                    
                   )}
+                  
                   <StComment>{comment.comment}</StComment>
                 </StCommentList>
 
@@ -114,22 +120,6 @@ const PostComments = ({ post, id }) => {
                       <CommentChange closeModal={closeModal} commentId={comment.commentId} />
                     </StModalContents>
                   </StModalBox>
-                )}
-
-                {isOpen && (
-                  <button
-                    onClick={async () => {
-                      const commentRef = doc(db, "comments", comment.commentId);
-                      await deleteDoc(commentRef);
-
-                      dispatch({
-                        type: REMOVE_COMMENT,
-                        payload: comment.commentId,
-                      });
-                    }}
-                  >
-                    삭제
-                  </button>
                 )}
               </Stlist>
             );
@@ -259,19 +249,6 @@ const StModalBox = styled.div`
   color: var(--color-text);
 `;
 
-// const StModalBox = styled.div`
-//   position: fixed;
-//   top: 0;
-//   left: 0;
-//   width: 100%;
-//   height: 100%;
-//   background-color: rgba(0, 0, 0, 0);
-//   display: flex;
-//   align-items: center;
-//   justify-content: center;
-//   color: var(--color-text);
-// `;
-
 const StModalContents = styled.div`
   background-color: var(--color-bg);
   padding: 20px;
@@ -279,3 +256,10 @@ const StModalContents = styled.div`
   height: 20%;
   border-radius: 8px;
 `;
+
+const StCmtUser = styled.div`
+  color: #6e6e6ec4;
+  text-align: right;
+  margin-right: 30px;
+  
+`

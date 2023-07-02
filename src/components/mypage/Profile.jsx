@@ -1,21 +1,20 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { doc, updateDoc, query, docs, collection, where, getDoc, getDocs } from "firebase/firestore";
-import { auth, db, storage } from "../../firebase";
+import { db, storage } from "../../firebase";
 import { P, S } from "./ProfileStyle";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { BiSolidLike } from "react-icons/bi";
 import { useNavigate } from "react-router-dom";
 import { userProfile } from "../../redux/modules/profileReducer";
-import { showMembers } from "../../redux/modules/logReducer";
-import { onAuthStateChanged } from "firebase/auth";
 
 const Profile = () => {
-  const getProfile = useSelector((state) => state.profile);
-  const getMyPosts = useSelector((state) => state.myPosts);
-
   const Navigate = useNavigate();
   const dispatch = useDispatch();
+
+  const getProfile = useSelector((state) => state.profile);
+
+  const MyPosts = useSelector((state) => state.myPosts);
 
   const { uid } = getProfile;
 
@@ -138,7 +137,7 @@ const Profile = () => {
           </P.Contents>
           <P.contentsBody>
             <S.PostingBoxCtn>
-              {getMyPosts.map((info) => {
+              {MyPosts.map((info) => {
                 return (
                   <S.PostingBox onClick={() => Navigate(`/post/${info.postId}`)} key={info.postId}>
                     <S.PostingFoodPhoto src={info.photoURL} />

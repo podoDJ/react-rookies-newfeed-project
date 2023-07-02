@@ -7,6 +7,7 @@ import { addPosts } from "../../redux/modules/postWrite";
 import { styled } from "styled-components";
 import { getDownloadURL, ref, uploadBytes } from "@firebase/storage";
 
+//Preview Modal Component(by Jinsol)
 const PreviewModal = ({ photoURL, setOpenModal, setPhotoURL, selectedFile }) => {
   return (
     <S.ModalDiv>
@@ -58,6 +59,7 @@ const FileForm = ({ handleUpload, handleFileSelect, photoURL }) => {
   );
 };
 
+//PostForm Component(by Dongjun)
 const PostForm = () => {
   //uid get
   const user = useSelector((state) => state.logReducer.user);
@@ -130,7 +132,6 @@ const PostForm = () => {
           postRecipe,
           uid: user.uid,
           displayName: user.displayName,
-          // postLike,
           postWhoLiked,
           postDate,
         })
@@ -141,7 +142,7 @@ const PostForm = () => {
     } else if (!photoURL) alert("이미지가 업로드 되지 않았습니다.\n이미지 선택 후 업로드 버튼을 클릭해주세요!");
   };
 
-  //최대 글자수 제한
+  //Input Limit
   const MAX_TITLE_LENGTH = 15;
   const titleLimit = (event) => {
     event.target.value.length <= MAX_TITLE_LENGTH ? setPostTitle(event.target.value) : alert(`글자수 제한 ${MAX_TITLE_LENGTH}자 입니다.`);

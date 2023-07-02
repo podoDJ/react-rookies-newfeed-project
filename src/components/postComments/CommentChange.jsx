@@ -9,7 +9,6 @@ import { styled } from "styled-components";
 
 const CommentChange = ({ closeModal, commentId }) => {
   const navigate = useNavigate();
-  const [uptitle, setUpTitle] = useState();
   const [upComment, setUpComment] = useState();
   const { id } = useParams();
   const comments = useSelector((state) => state.comment);
@@ -21,33 +20,25 @@ const CommentChange = ({ closeModal, commentId }) => {
       <form
         onSubmit={async (e) => {
           e.preventDefault();
-          if (!uptitle || !upComment) {
+          if (!upComment) {
             alert("내용을 추가해주세요");
             return false;
           }
 
           const commentRef = doc(db, "comments", comment.commentId);
 
-          await updateDoc(commentRef, { ...comment, title: uptitle, comment: upComment });
+          await updateDoc(commentRef, { ...comment, comment: upComment });
           dispatch({
             type: UPDATE_COMMENT,
             payload: {
-              title: uptitle,
               comment: upComment,
               postId: id,
-              commentId: comment.commentId,
+              commentId,
             },
           });
         }}
       >
-        <input
-          type="text"
-          value={uptitle || ""}
-          onChange={(e) => {
-            setUpTitle(e.target.value);
-          }}
-        />
-        <input
+        <StUpInput
           type="text"
           value={upComment || ""}
           onChange={(e) => {
@@ -76,17 +67,6 @@ const StUpInput = styled.input`
   border: 1px solid rgba(77, 77, 77, 0.796);
   border-radius: 3px;
 `;
-
-// const StUpInput = styled.input`
-//   top: 10px;
-//   left: 25px;
-//   width: 90%;
-//   height: 40px;
-//   padding: 15px;
-//   background-color: var(--color-bg);
-//   border: 1px solid rgba(77, 77, 77, 0.796);
-//   border-radius: 3px;
-// `;
 
 const STUpBtn = styled.button`
   top: 55px;
