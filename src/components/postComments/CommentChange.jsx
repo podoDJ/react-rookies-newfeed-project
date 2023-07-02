@@ -19,18 +19,17 @@ const CommentChange = ({ closeModal, commentId }) => {
       <form
         onSubmit={async (e) => {
           e.preventDefault();
-          if (!uptitle || !upComment) {
+          if (!upComment) {
             alert("내용을 추가해주세요");
             return false;
           }
 
           const commentRef = doc(db, "comments", comment.commentId);
 
-          await updateDoc(commentRef, { ...comment, title: uptitle, comment: upComment });
+          await updateDoc(commentRef, { ...comment, comment: upComment });
           dispatch({
             type: UPDATE_COMMENT,
             payload: {
-              title: uptitle,
               comment: upComment,
               postId: id,
               commentId,
