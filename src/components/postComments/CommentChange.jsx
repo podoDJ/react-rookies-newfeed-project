@@ -9,7 +9,6 @@ import { styled } from "styled-components";
 
 const CommentChange = ({ closeModal, commentId }) => {
   const navigate = useNavigate();
-  const [uptitle, setUpTitle] = useState();
   const [upComment, setUpComment] = useState();
   const { id } = useParams();
   const comments = useSelector((state) => state.comment);
@@ -35,19 +34,12 @@ const CommentChange = ({ closeModal, commentId }) => {
               title: uptitle,
               comment: upComment,
               postId: id,
-              commentId: comment.commentId,
+              commentId,
             },
           });
         }}
       >
-        <input
-          type="text"
-          value={uptitle || ""}
-          onChange={(e) => {
-            setUpTitle(e.target.value);
-          }}
-        />
-        <input
+        <StUpInput
           type="text"
           value={upComment || ""}
           onChange={(e) => {
