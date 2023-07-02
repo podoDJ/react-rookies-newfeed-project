@@ -52,6 +52,7 @@ export const P = {
     border-radius: 5px;
     background-color: transparent;
     color: var(--color-text);
+    outline: none;
   `,
   MemberTextarea: styled.textarea`
     width: 296px;
@@ -61,6 +62,7 @@ export const P = {
     border-radius: 5px;
     background-color: transparent;
     color: var(--color-text);
+    outline: none;
   `,
 
   Contents: styled.div`

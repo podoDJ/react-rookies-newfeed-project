@@ -28,7 +28,6 @@ import PostCommentUpdata from "../pages/PostCommentUpdata";
 
 // 제이 추가
 import { userProfile } from "../redux/modules/profileReducer";
-import { myPosts } from "../redux/modules/myPostReducer";
 
 const Router = () => {
   const dispatch = useDispatch();
@@ -52,20 +51,6 @@ const Router = () => {
     };
     getProfile();
 
-    const getMyPosts = () => {
-      onAuthStateChanged(auth, async (user) => {
-        if (user) {
-          let arr = new Array();
-          const q = query(collection(db, "posts"), where("uid", "==", user.uid));
-          const docSnap = await getDocs(q);
-          docSnap.forEach((info) => {
-            arr.push(info.data());
-          });
-          dispatch(myPosts(arr));
-        }
-      });
-    };
-    getMyPosts();
     //------제이 추가
     const newArr = [];
     const fetchPostsData = async () => {

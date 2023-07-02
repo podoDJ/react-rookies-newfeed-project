@@ -1,19 +1,46 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { doc, updateDoc, query, docs, collection, where, getDoc, getDocs } from "firebase/firestore";
-import { db, storage } from "../../firebase";
+import { auth, db, storage } from "../../firebase";
 import { P, S } from "./ProfileStyle";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { BiSolidLike } from "react-icons/bi";
 import { useNavigate } from "react-router-dom";
 import { userProfile } from "../../redux/modules/profileReducer";
+import { myPosts } from "../../redux/modules/myPostReducer";
+import { onAuthStateChanged } from "firebase/auth";
 
 const Profile = () => {
+  const firebaseGetProfile = () => {
+    onAuthStateChanged(auth, async (user) => {
+      if (user) {
+        const docRef = doc(db, "members", user.uid);
+        const docSnap = await getDoc(docRef);
+        dispatch(userProfile({ ...docSnap.data(), uid: user.uid }));
+      }
+    });
+  };
+
+  const firebaseGetMyPosts = () => {
+    onAuthStateChanged(auth, async (user) => {
+      if (user) {
+        const q = query(collection(db, "posts"), where("uid", "==", user.uid));
+        const docSnap = await getDocs(q);
+        const result = docSnap.docs.map((x) => x.data());
+        dispatch(myPosts(result));
+      }
+    });
+  };
+
+  useEffect(() => {
+    firebaseGetProfile();
+    firebaseGetMyPosts();
+  }, []);
+
   const Navigate = useNavigate();
   const dispatch = useDispatch();
 
   const getProfile = useSelector((state) => state.profile);
-
   const MyPosts = useSelector((state) => state.myPosts);
 
   const { uid } = getProfile;
@@ -21,7 +48,7 @@ const Profile = () => {
   const [selectedFile, setSelectedFile] = useState(null);
   const [currentPhotoURL, setCurrentPhotoURL] = useState(null);
   const [currentDisplayName, setCurrentDisplayName] = useState(null);
-  const [currentProfileCmt, setCurrentProfileCmt] = useState(null);
+  const [currentProfileCmt, setCurrentProfileCmt] = useState("안녕하세요, 반갑습니다.");
 
   useEffect(() => {
     setCurrentPhotoURL(getProfile.photoURL);
