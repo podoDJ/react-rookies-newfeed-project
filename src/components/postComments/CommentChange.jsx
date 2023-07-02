@@ -68,17 +68,6 @@ const StUpInput = styled.input`
   border-radius: 3px;
 `;
 
-// const StUpInput = styled.input`
-//   top: 10px;
-//   left: 25px;
-//   width: 90%;
-//   height: 40px;
-//   padding: 15px;
-//   background-color: var(--color-bg);
-//   border: 1px solid rgba(77, 77, 77, 0.796);
-//   border-radius: 3px;
-// `;
-
 const STUpBtn = styled.button`
   top: 55px;
   right: 65px;
