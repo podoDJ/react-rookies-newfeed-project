@@ -4,7 +4,6 @@ import { styled } from "styled-components";
 import { auth } from "../../../firebase";
 import { signOut } from "firebase/auth";
 import { useSelector } from "react-redux";
-import honcook from "../../../assets/images/honcook.png";
 
 export const HeaderComp = () => {
   const navigate = useNavigate();
@@ -92,19 +91,14 @@ export const UserHeaderComp = () => {
   const logOutFunc = async () => {
     await signOut(auth);
     window.location.reload();
-    // 로컬스토리지 코드 삭제(제이)
   };
 
   const user = useSelector((state) => {
     return state.logReducer.user;
   });
-  const members = useSelector((state) => {
-    return state.logReducer.members;
-  });
 
-  const currentUser = members.filter((item) => {
-    return item.id == auth.currentUser.uid;
-  });
+  // 제이 추가
+  const getProfile = useSelector((state) => state.profile);
 
   return (
     <S.Header>
@@ -227,11 +221,6 @@ const S = {
       transition-duration: 100ms;
     }
   `,
-
-  Logo: styled.img`
-    width: 200px;
-  `,
-
   Img: styled.img`
     background-color: white;
     width: 50px;

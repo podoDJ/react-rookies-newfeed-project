@@ -25,7 +25,7 @@ const comment = (state = initialState, action) => {
     case UPDATE_COMMENT:
       return state.map((comment) => {
         if (comment.commentId === action.payload.commentId) {
-          return { ...comment, comment: action.payload.comment };
+          return { ...comment, Title: action.payload.title, comment: action.payload.commentId };
         } else {
           return comment;
         }

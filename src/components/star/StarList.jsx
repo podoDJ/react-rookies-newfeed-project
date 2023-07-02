@@ -6,6 +6,7 @@ import { BiSolidLike } from "react-icons/bi";
 import { db } from "../../firebase";
 import { useDispatch, useSelector } from "react-redux";
 import { showMembers } from "../../redux/modules/logReducer";
+// import InfiniteScroll from "react-infinite-scroll-component";
 
 export default function StarList() {
   const navigate = useNavigate();

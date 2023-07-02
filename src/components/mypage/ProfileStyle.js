@@ -46,8 +46,17 @@ export const P = {
   `,
   MemberInput: styled.input`
     width: 300px;
-    height: 40px;
+    height: 30px;
     padding-left: 15px;
+    border: 0.03rem solid gray;
+    border-radius: 5px;
+    background-color: transparent;
+    color: var(--color-text);
+  `,
+  MemberTextarea: styled.textarea`
+    width: 296px;
+    height: 40px;
+    padding: 10px;
     border: 0.03rem solid gray;
     border-radius: 5px;
     background-color: transparent;
@@ -61,10 +70,13 @@ export const P = {
     color: var(--color-text);
   `,
 
-  ContentsTitle: styled.h2`
+  ContentsTitle: styled.button`
     cursor: pointer;
     margin-left: 15px;
     margin-bottom: 5px;
+    border: none;
+    background-color: transparent;
+    font-size: 15px;
   `,
 
   contentsBody: styled.div`
@@ -96,7 +108,7 @@ export const P = {
             width: 319px;
             height: 40px;
 
-            margin-top: 20px;
+            margin-top: 10px;
           `;
       }
     }}
