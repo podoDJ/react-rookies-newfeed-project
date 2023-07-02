@@ -15,7 +15,6 @@ export const initialState = [];
 
 // 리듀서
 const comment = (state = initialState, action) => {
-  console.log(state);
   switch (action.type) {
     case "BASE_COMMENT":
       return [...action.payload];
