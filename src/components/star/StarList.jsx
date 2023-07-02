@@ -12,9 +12,18 @@ export default function StarList() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
+  const updateMembers = async () => {
+    const q = query(collection(db, "members"));
+    const getMembers = await getDocs(q);
+
+    const result = getMembers.docs.map((x) => x.data());
+    dispatch(showMembers(result));
+  };
+
   const starList = useSelector((state) => state.logReducer.members);
 
   useEffect(() => {
+    updateMembers();
     // showMembers 액션을 디스패치하여 멤버 정보 표시
     dispatch(showMembers(starList));
   }, []);

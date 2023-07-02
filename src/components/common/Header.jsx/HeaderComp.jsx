@@ -163,7 +163,7 @@ export const UserHeaderComp = () => {
         </S.HeaderSubMenu>
         <S.Img
           id="PROFILE IMG"
-          src={getProfile.photoURL}
+          src={getProfile.photoURL ? getProfile.photoURL : "https://i.pinimg.com/originals/99/f3/06/99f3068e425e6b9f56d683b0859ee942.jpg"}
           onClick={(event) => {
             addItem(event);
             navigate("/mypage");
