@@ -5,6 +5,7 @@ import { addDoc, collection, deleteDoc, doc, getDocs, query, setDoc } from "fire
 import { db } from "../../firebase";
 import { Await, Link } from "react-router-dom";
 import { styled } from "styled-components";
+import CommentChange from "./CommentChange"; // 제이 임시 추가
 
 const PostComments = ({ post, id }) => {
   const uid = useSelector((state) => state.logReducer.user.uid);

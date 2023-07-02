@@ -27,7 +27,7 @@ const Profile = () => {
         <P.ProfileBody>
           <p>EMAIL&nbsp;&nbsp;&nbsp; {user.email}</p>
           <P.NameBox>
-            <p>NAME&nbsp;&nbsp;&nbsp;{user.displayName}</p>
+            <p>NAME&nbsp;&nbsp;&nbsp;&nbsp;{user.displayName}</p>
           </P.NameBox>
           <P.IntroContainer>
             <label>COMMENT</label>
