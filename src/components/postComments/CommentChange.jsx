@@ -5,6 +5,7 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import { db } from "../../firebase";
 import { doc, updateDoc } from "@firebase/firestore";
 import { UPDATE_COMMENT } from "../../redux/modules/comment";
+import { styled } from "styled-components";
 
 const CommentChange = ({ closeModal, commentId }) => {
   const navigate = useNavigate();
