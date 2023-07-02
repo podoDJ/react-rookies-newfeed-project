@@ -25,12 +25,12 @@ const Profile = () => {
           <P.ProfileImage src={user.photoURL} alt="profile" />
         </P.ProfileImageBox>
         <P.ProfileBody>
-          <p>EMAIL : {user.email}</p>
+          <p>EMAIL&nbsp;&nbsp;&nbsp; {user.email}</p>
           <P.NameBox>
-            <p>NAME : {user.displayName}</p>
+            <p>NAME&nbsp;&nbsp;&nbsp;{user.displayName}</p>
           </P.NameBox>
           <P.IntroContainer>
-            <label>INTRO :</label>
+            <label>COMMENT</label>
             <P.Intro> {user.profileCmt}</P.Intro>
           </P.IntroContainer>
         </P.ProfileBody>
@@ -40,14 +40,14 @@ const Profile = () => {
         <G.Textarea name="guestbook" />
         <G.CreateBtn>등록</G.CreateBtn>
         <G.GuestbookList>
-          <G.UserImage src={user.photoURL} alt="profile" />
+          <G.UserImage src="https://i.pinimg.com/originals/99/f3/06/99f3068e425e6b9f56d683b0859ee942.jpg" alt="profile" />
           <G.UserCmt>
-            <p>{user.displayName}</p>
-            <span>작성시간</span>
+            <p>HONCOOK</p>
+            <span>2시간 전</span>
           </G.UserCmt>
           <G.UpdateBtn>수정</G.UpdateBtn>
           <G.DeleteBtn>삭제</G.DeleteBtn>
-          <G.Cmt>작성 글</G.Cmt>
+          <G.Cmt>레시피 잘 보고 갑니다~</G.Cmt>
         </G.GuestbookList>
       </G.Guestbook>
     </>
