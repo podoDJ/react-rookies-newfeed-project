@@ -48,8 +48,8 @@ const CommentChange = ({ commentId, closeModal }) => {
           }}
         />
         <br />
-        <button>수정</button>
-        <button onClick={closeModal}>닫기</button>
+        <STUpBtn>수정</STUpBtn>
+        <STDeBtn onClick={closeModal}>닫기</STDeBtn>
       </form>
     </div>
   );
@@ -57,15 +57,44 @@ const CommentChange = ({ commentId, closeModal }) => {
 
 export default CommentChange;
 
-// const StxButton = styled.button`
-//   display: flex;
-//   bottom: 100px;
-//   right: -250px;
-//   position: relative;
-// `;
 const StUpInput = styled.input`
-  display: flex;
-  position: relative;
-  width: 80%;
-  height: 30px;
+  position: absolute;
+  top: 10px;
+  left: 25px;
+  width: 90%;
+  height: 40px;
+  padding: 15px;
+  background-color: var(--color-bg);
+  border: 1px solid rgba(77, 77, 77, 0.796);
+  border-radius: 3px;
+`;
+
+const STUpBtn = styled.button`
+  position: absolute;
+  top: 55px;
+  right: 65px;
+  color: #a8a7a7c4;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+
+  &:hover {
+    color: var(--color-text);
+    text-decoration: underline;
+  }
+`;
+
+const STDeBtn = styled.button`
+  position: absolute;
+  top: 55px;
+  right: 30px;
+  color: #a8a7a7c4;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+
+  &:hover {
+    color: var(--color-text);
+    text-decoration: underline;
+  }
 `;

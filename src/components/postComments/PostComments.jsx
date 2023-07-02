@@ -36,47 +36,48 @@ const PostComments = ({ post, id }) => {
     };
     fetchData();
   }, [dispatch]);
-
+  const isOpen = comment.userId !== uid;
   return (
-    <div>
-      <StTitle>댓글</StTitle>
-      <form
-        onSubmit={async (e) => {
-          e.preventDefault();
-          if (!comment) {
-            alert("내용을 추가해주세요");
-            return false;
-          }
+    <>
+      <StCommentContainer>
+        <StTitle>댓글</StTitle>
+        <StForm
+          onSubmit={async (e) => {
+            e.preventDefault();
+            if (!comment) {
+              alert("내용을 추가해주세요");
+              return false;
+            }
 
-          const collectionRef = collection(db, "comments");
-          const docRef = await addDoc(collectionRef, { comment });
-          const commentDocRef = doc(db, "comments", docRef.id);
-          await setDoc(commentDocRef, { commentId: docRef.id, postId: id, userId: uid }, { merge: true });
+            const collectionRef = collection(db, "comments");
+            const docRef = await addDoc(collectionRef, { comment });
+            const commentDocRef = doc(db, "comments", docRef.id);
+            await setDoc(commentDocRef, { commentId: docRef.id, postId: id, userId: uid }, { merge: true });
 
-          dispatch({
-            type: ADD_COMMENT,
-            payload: {
-              postId: post.id,
-              userId: uid,
-              commentId: docRef.id,
+            dispatch({
+              type: ADD_COMMENT,
+              payload: {
+                postId: post.id,
+                userId: uid,
+                commentId: docRef.id,
 
-              comment,
-            },
-          });
-        }}
-      >
-        <StinputText
-          type="text"
-          placeholder="내용을적어주세요"
-          value={comment}
-          onChange={(e) => {
-            setComment(e.target.value);
+                comment,
+              },
+            });
           }}
-        />
+        >
+          <StinputText
+            type="text"
+            placeholder="내용을적어주세요"
+            value={comment}
+            onChange={(e) => {
+              setComment(e.target.value);
+            }}
+          />
 
-        <Stbutton>작성</Stbutton>
-      </form>
-
+          {isOpen && <StCreateBtn>작성</StCreateBtn>}
+        </StForm>
+      </StCommentContainer>
       <div>
         {comments
           .filter((item) => {
@@ -87,27 +88,25 @@ const PostComments = ({ post, id }) => {
 
             return (
               <Stlist key={comment.commentId}>
-                <StCommentBox>
-                  <StCommentList>
-                    <StComment>{comment.comment}</StComment>
-                    {isOpen && <Stbutton onClick={openModal}>수정</Stbutton>}
-                    {isOpen && (
-                      <Stbutton
-                        onClick={async () => {
-                          const commentRef = doc(db, "comments", comment.commentId);
-                          await deleteDoc(commentRef);
+                <StCommentList>
+                  {isOpen && <StUpdatebtn onClick={openModal}>수정</StUpdatebtn>}
+                  {isOpen && (
+                    <StDeleteBtn
+                      onClick={async () => {
+                        const commentRef = doc(db, "comments", comment.commentId);
+                        await deleteDoc(commentRef);
 
-                          dispatch({
-                            type: REMOVE_COMMENT,
-                            payload: comment.commentId,
-                          });
-                        }}
-                      >
-                        삭제
-                      </Stbutton>
-                    )}
-                  </StCommentList>
-                </StCommentBox>
+                        dispatch({
+                          type: REMOVE_COMMENT,
+                          payload: comment.commentId,
+                        });
+                      }}
+                    >
+                      삭제
+                    </StDeleteBtn>
+                  )}
+                  <StComment>{comment.comment}</StComment>
+                </StCommentList>
 
                 {/* {isOpen && <Stbutton onClick={openModal}>수정</Stbutton>} */}
                 {isModal && (
@@ -140,22 +139,128 @@ const PostComments = ({ post, id }) => {
             );
           })}
       </div>
-    </div>
+    </>
   );
 };
 
 export default PostComments;
 
-const StModalBox = styled.div`
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
+const StCommentContainer = styled.div`
+  position: relative;
+  max-width: 850px;
   display: flex;
-  align-items: center;
+  flex-direction: column;
   justify-content: center;
+  align-items: center;
+  margin: 30px auto;
+  padding-top: 40px;
+  gap: 10px;
+  color: var(--color-text);
+`;
+
+const StTitle = styled.div`
+  position: absolute;
+  top: 10px;
+  left: 20px;
+`;
+
+const StForm = styled.form`
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  margin: 10px auto;
+`;
+
+const StinputText = styled.input`
+  position: absolute;
+  top: 20px;
+  left: -8px;
+  width: 813px;
+  height: 40px;
+  background-color: var(--color-bg);
+  border: 1px solid rgba(77, 77, 77, 0.5);
+  border-radius: 3px;
+  padding: 15px;
+`;
+
+const StCreateBtn = styled.button`
+  position: absolute;
+  top: 100px;
+  left: 790px;
+  width: 45px;
+  height: 28px;
+  border: none;
+  border-radius: 5px;
+  color: var(--color-white);
+  background: var(--color-accent);
+  cursor: pointer;
+`;
+
+const Stlist = styled.div`
+  position: relative;
+  top: 100px;
+  max-width: 850px;
+  display: flex;
+  flex-direction: column;
+  margin: 30px auto;
+  padding-top: 80px;
+  color: var(--color-text);
+`;
+
+const StUpdatebtn = styled.button`
+  position: absolute;
+  right: 50px;
+  color: #a8a7a7c4;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+
+  &:hover {
+    color: var(--color-text);
+    text-decoration: underline;
+  }
+`;
+
+const StDeleteBtn = styled.button`
+  position: absolute;
+  right: 15px;
+  color: #a8a7a7c4;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+
+  &:hover {
+    color: var(--color-text);
+    text-decoration: underline;
+  }
+`;
+
+const StCommentList = styled.div`
+  position: absolute;
+  top: 10px;
+  left: 15px;
+  border-bottom: 1px solid rgba(77, 77, 77, 0.5);
+  width: 97%;
+  overflow: auto;
+`;
+
+const StComment = styled.p`
+  width: 95%;
+  height: 50px;
+  margin-top: 20px;
+  padding: 15px;
+`;
+
+const StModalBox = styled.div`
+  position: relative;
+  width: 850px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 30px auto;
+  padding-top: 40px;
+  color: var(--color-text);
 `;
 
 const StModalContents = styled.div`
@@ -164,48 +269,4 @@ const StModalContents = styled.div`
   width: 15%;
   height: 10%;
   border-radius: 12px;
-`;
-const StinputText = styled.input`
-  width: 35%;
-  height: 25px;
-  margin-left: 10%;
-  margin-top: 20px;
-  border-radius: 10px;
-  border: 1px solid rgba(77, 77, 77, 0.5);
-`;
-const StCommentList = styled.div`
-  background-color: white;
-  border-radius: 12px;
-  border: 1px solid rgba(77, 77, 77, 0.5);
-  margin-top: 10px;
-  width: 60%;
-  height: 25px;
-  overflow: auto;
-  height: 100px;
-`;
-const Stbutton = styled.button`
-  width: 45px;
-  height: 28px;
-  border: none;
-  border-radius: 5px;
-  color: var(--color-white);
-  background: var(--color-accent);
-  cursor: pointer;
-  margin-left: 10px;
-`;
-const Stlist = styled.div`
-  margin-left: 10%;
-  width: 60%;
-`;
-const StTitle = styled.div`
-  margin-left: 40%;
-  margin-top: 25px;
-`;
-const StCommentBox = styled.div`
-  overflow: auto;
-  height: 100px;
-`;
-const StComment = styled.p`
-  width: 50%;
-  height: 20px;
 `;
