@@ -55,7 +55,7 @@ const PostDetailBrowse = ({ post, id }) => {
     <>
       <S.PostWrapper>
         <S.PostDetailBox>
-          <S.PrevBtn marginTop="10px" onClick={() => navigate("/post")}>
+          <S.PrevBtn marginTop="10px" onClick={() => window.history.back()}>
             이전으로
           </S.PrevBtn>
 
