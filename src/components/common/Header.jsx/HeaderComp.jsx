@@ -4,6 +4,7 @@ import { styled } from "styled-components";
 import { auth } from "../../../firebase";
 import { signOut } from "firebase/auth";
 import { useSelector } from "react-redux";
+const logoUrl = "/assets/images/honcook.png";
 
 export const HeaderComp = () => {
   const navigate = useNavigate();
@@ -28,7 +29,7 @@ export const HeaderComp = () => {
             navigate("/");
           }}
         >
-          <S.Logo src={honcook} alt="logo" />
+          <S.Logo src={logoUrl} alt="logo" />
         </S.HeaderMenu>
         <S.HeaderMenu
           id="POST"
@@ -111,7 +112,7 @@ export const UserHeaderComp = () => {
             navigate("/");
           }}
         >
-          <S.Logo src={honcook} alt="logo" />
+          <S.Logo src={logoUrl} alt="logo" />
         </S.HeaderMenu>
         <S.HeaderMenu
           id="POST"
@@ -161,7 +162,7 @@ export const UserHeaderComp = () => {
         </S.HeaderSubMenu>
         <S.Img
           id="PROFILE IMG"
-          src={currentUser[0]?.photoURL ? currentUser[0].photoURL : "https://i.pinimg.com/originals/99/f3/06/99f3068e425e6b9f56d683b0859ee942.jpg"}
+          src={getProfile.photoURL}
           onClick={(event) => {
             addItem(event);
             navigate("/mypage");
@@ -228,5 +229,9 @@ const S = {
     border-radius: 100%;
     margin-left: 10px;
     cursor: pointer;
+  `,
+
+  Logo: styled.img`
+    width: 200px;
   `,
 };

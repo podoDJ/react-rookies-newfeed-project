@@ -1,17 +1,19 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { updateProfile } from "../../redux/modules/profileReducer";
 import { doc, updateDoc, query, docs, collection, where, getDoc, getDocs } from "firebase/firestore";
-import { db, storage } from "../../firebase";
+import { auth, db, storage } from "../../firebase";
 import { P, S } from "./ProfileStyle";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { BiSolidLike } from "react-icons/bi";
 import { useNavigate } from "react-router-dom";
 import { userProfile } from "../../redux/modules/profileReducer";
+import { showMembers } from "../../redux/modules/logReducer";
+import { onAuthStateChanged } from "firebase/auth";
 
 const Profile = () => {
   const getProfile = useSelector((state) => state.profile);
   const getMyPosts = useSelector((state) => state.myPosts);
+
   const Navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -74,7 +76,6 @@ const Profile = () => {
     dispatch(userProfile(updateProfileData));
   };
 
-  // const updatedProfile = { ...getProfile, displayName: currentDisplayName, profileCmt: currentProfileCmt };
   const changedPhoto = async (e) => {
     const file = e.target.files[0];
     setSelectedFile(file);
@@ -90,6 +91,7 @@ const Profile = () => {
       alert("프로필 사진 변경 완료");
 
       const updateProfileData = { ...getProfile, photoURL: resultPhotoURL };
+
       dispatch(userProfile(updateProfileData));
     } catch (error) {
       console.log(error);
@@ -132,7 +134,7 @@ const Profile = () => {
           </P.ProfileContainer>
           <P.Contents>
             <P.ContentsTitle>내가 쓴 글</P.ContentsTitle>
-            <P.ContentsTitle>방명록</P.ContentsTitle>
+            {/* <P.ContentsTitle>방명록</P.ContentsTitle> */}
           </P.Contents>
           <P.contentsBody>
             <S.PostingBoxCtn>
