@@ -111,7 +111,7 @@ const PostForm = () => {
     if (photoURL) {
       // 이전에 사용했던 방법: const newPost = { postId: shortid.generate(), postTitle, postBody };
       const collectionRef = collection(db, "posts");
-      const docRef = await addDoc(collectionRef, { postTitle, postBody, uid: user.uid, displayName: user.displayName, postWhoLiked, postDate, photoURL });
+      const docRef = await addDoc(collectionRef, { postTitle, postBody, postIngredient, postRecipe, uid: user.uid, displayName: user.displayName, postWhoLiked, postDate, photoURL });
 
       // 도큐먼트 아이디가 바로 필드에 반영되도록 하는 코드
       const postDocRef = doc(db, "posts", docRef.id);
@@ -178,7 +178,7 @@ const PostForm = () => {
       <S.PostForm onSubmit={handleSubmit}>
         <div>
           <div>
-            <S.PostLabel for="postTitle">Today HonCook</S.PostLabel>
+            <S.PostLabel HTtmlFor="postTitle">Today HonCook</S.PostLabel>
             <S.PostInput
               text="text"
               name="postTitle"
@@ -190,7 +190,7 @@ const PostForm = () => {
           </div>
 
           <div>
-            <S.PostLabel for="postBody">CooK Story</S.PostLabel>
+            <S.PostLabel HTtmlFor="postBody">CooK Story</S.PostLabel>
             <S.PostTextarea
               text="text"
               name="postBody"
@@ -202,7 +202,7 @@ const PostForm = () => {
           </div>
 
           <div>
-            <S.PostLabel for="postIngredient">CooK Ingredient</S.PostLabel>
+            <S.PostLabel HTtmlFor="postIngredient">CooK Ingredient</S.PostLabel>
             <S.PostTextarea
               text="text"
               name="postIngredient"
@@ -214,7 +214,7 @@ const PostForm = () => {
           </div>
 
           <div>
-            <S.PostLabel for="postRecipe">Cook recipe</S.PostLabel>
+            <S.PostLabel HTtmlFor="postRecipe">Cook recipe</S.PostLabel>
             <S.PostTextarea
               text="text"
               name="postRecipe"
