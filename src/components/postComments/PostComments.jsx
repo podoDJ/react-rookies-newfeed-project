@@ -5,17 +5,17 @@ import { addDoc, collection, deleteDoc, doc, getDocs, query, setDoc } from "fire
 import { db } from "../../firebase";
 import { Await, Link } from "react-router-dom";
 import { styled } from "styled-components";
-
+import CommentChange from "./CommentChange";
 const PostComments = ({ post, id }) => {
   const uid = useSelector((state) => state.logReducer.user.uid);
-  const [upDataCommentId, setUpDataCommentId] = useState("");
+
   const comments = useSelector((state) => {
     return state.comment;
   });
 
   const dispatch = useDispatch();
   const [comment, setComment] = useState("");
-
+  const [upDataCommentId, setUpDataCommentId] = useState("");
   const closeModal = () => {
     setUpDataCommentId(false);
   };
@@ -113,22 +113,6 @@ const PostComments = ({ post, id }) => {
                       <CommentChange closeModal={closeModal} commentId={comment.commentId} />
                     </StModalContents>
                   </StModalBox>
-                )}
-
-                {isOpen && (
-                  <button
-                    onClick={async () => {
-                      const commentRef = doc(db, "comments", comment.commentId);
-                      await deleteDoc(commentRef);
-
-                      dispatch({
-                        type: REMOVE_COMMENT,
-                        payload: comment.commentId,
-                      });
-                    }}
-                  >
-                    삭제
-                  </button>
                 )}
               </Stlist>
             );
