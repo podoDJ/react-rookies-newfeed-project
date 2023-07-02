@@ -86,10 +86,11 @@ const Profile = () => {
     e.preventDefault();
 
     if (!currentDisplayName) return alert("닉네임을 입력해주세요");
-
+    //firebase storage에 복합색인 설정 필요. 컬렉션ID : members, 필드 : displayName과 email 각각 입력, 컬렉션 종류(?)는 단일 컬렉션 선택 by DJ
     const q = query(collection(db, "members"), where("displayName", "==", currentDisplayName), where("email", "!=", getProfile.email));
     const result = await getDocs(q);
     const findData = result.docs[0]?.data();
+    
 
     if (findData) return alert("이미 사용중인 닉네임 입니다.");
 
@@ -169,7 +170,7 @@ const Profile = () => {
                   <S.PostingBox onClick={() => Navigate(`/post/${info.postId}`)} key={info.postId}>
                     <S.PostingFoodPhoto src={info.photoURL} />
                     <S.PostingTitle>{info.postTitle}</S.PostingTitle>
-                    <S.PostingBody>작성자</S.PostingBody>
+                    <S.PostingBody>{info.displayName}</S.PostingBody>
                     <S.PostingDateLikeBox>
                       <p style={{ marginRight: "20px" }}> {info.postDate.slice(0, 11)}</p>
                       <S.PostingLike>

@@ -17,7 +17,6 @@ export const HeaderComp = () => {
     sessionStorage.setItem("clickedMenus", JSON.stringify(clickedMenuArray));
   };
   const clickedNow = clickedMenuArray.at(-1);
-  console.log("clickedNow=>", clickedNow);
 
   return (
     <S.Header>
@@ -88,7 +87,6 @@ export const UserHeaderComp = () => {
     sessionStorage.setItem("clickedMenus", JSON.stringify(clickedMenuArray));
   };
   const clickedNow = clickedMenuArray.at(-1);
-  console.log("clickedNow=>", clickedNow);
 
   const logOutFunc = async () => {
     await signOut(auth);
