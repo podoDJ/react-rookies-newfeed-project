@@ -34,7 +34,6 @@ const PostComments = ({ post, id }) => {
   }, [dispatch]);
   const isOpen = comment.userId !== uid;
   return (
-
     <>
       <StCommentContainer>
         <StTitle>댓글</StTitle>
@@ -50,7 +49,6 @@ const PostComments = ({ post, id }) => {
             const docRef = await addDoc(collectionRef, { comment });
             const commentDocRef = doc(db, "comments", docRef.id);
             await setDoc(commentDocRef, { commentId: docRef.id, postId: id, userId: uid }, { merge: true });
-
 
             dispatch({
               type: ADD_COMMENT,
@@ -85,7 +83,6 @@ const PostComments = ({ post, id }) => {
             const isOpen = comment.userId === uid;
             const isModal = comment.commentId === upDataCommentId;
             return (
-
               <Stlist key={comment.commentId}>
                 <StCommentList>
                   {isOpen && <StUpdatebtn onClick={() => setUpDataCommentId(comment.commentId)}>수정</StUpdatebtn>}
@@ -117,7 +114,6 @@ const PostComments = ({ post, id }) => {
                       <CommentChange closeModal={closeModal} commentId={comment.commentId} />
                     </StModalContents>
                   </StModalBox>
-
                 )}
 
                 {isOpen && (
@@ -135,7 +131,7 @@ const PostComments = ({ post, id }) => {
                     삭제
                   </button>
                 )}
-              </Stspan>
+              </Stlist>
             );
           })}
       </div>
@@ -144,7 +140,6 @@ const PostComments = ({ post, id }) => {
 };
 
 export default PostComments;
-
 
 const StCommentContainer = styled.div`
   position: relative;
@@ -284,4 +279,3 @@ const StModalContents = styled.div`
   height: 20%;
   border-radius: 8px;
 `;
-
