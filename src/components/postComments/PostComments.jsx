@@ -14,13 +14,12 @@ const PostComments = ({ post, id }) => {
   });
 
   const dispatch = useDispatch();
-  const [title, setTitle] = useState("");
   const [comment, setComment] = useState("");
 
   const closeModal = () => {
     setUpDataCommentId(false);
   };
-  // 함수의 리턴값 const abc  = (a)=> return a+1  abc(1) const b = abc(1512341)
+
   useEffect(() => {
     const fetchData = async () => {
       const q = query(collection(db, "comments"));
