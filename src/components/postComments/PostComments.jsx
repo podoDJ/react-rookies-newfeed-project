@@ -6,6 +6,7 @@ import { db } from "../../firebase";
 import { Await, Link } from "react-router-dom";
 import { styled } from "styled-components";
 import CommentChange from "./CommentChange";
+
 const PostComments = ({ post, id }) => {
   const uid = useSelector((state) => state.logReducer.user.uid);
   //2023-07-02 22:23 동준 commentUser 추가(댓글 작성자)
