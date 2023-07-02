@@ -1,16 +1,19 @@
 import React, { useEffect, useRef, useState } from "react";
-import { useSelector } from "react-redux";
-import { doc, updateDoc } from "firebase/firestore";
+import { useSelector, useDispatch } from "react-redux";
+import { updateProfile } from "../../redux/modules/profileReducer";
+import { doc, updateDoc, query, docs, collection, where, getDoc, getDocs } from "firebase/firestore";
 import { db, storage } from "../../firebase";
 import { P, S } from "./ProfileStyle";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { BiSolidLike } from "react-icons/bi";
 import { useNavigate } from "react-router-dom";
+import { userProfile } from "../../redux/modules/profileReducer";
 
 const Profile = () => {
   const getProfile = useSelector((state) => state.profile);
   const getMyPosts = useSelector((state) => state.myPosts);
   const Navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const { uid } = getProfile;
 
@@ -47,19 +50,31 @@ const Profile = () => {
     setCurrentProfileCmt(e.target.value);
   };
 
-  const profileUpdateHamdler = (e) => {
+  const profileUpdateHandler = (e) => {
     e.preventDefault();
   };
 
   const updateProfile = async (e) => {
     e.preventDefault();
 
+    if (!currentDisplayName) return alert("닉네임을 입력해주세요");
+
+    const q = query(collection(db, "members"), where("displayName", "==", currentDisplayName), where("email", "!=", getProfile.email));
+    const result = await getDocs(q);
+    const findData = result.docs[0]?.data();
+
+    if (findData) return alert("이미 사용중인 닉네임 입니다.");
+
     const userDocRef = doc(db, "members", uid);
     await updateDoc(userDocRef, { profileCmt: currentProfileCmt, displayName: currentDisplayName });
 
     alert("프로필 정보 변경 완료");
+
+    const updateProfileData = { ...getProfile, profileCmt: currentProfileCmt, displayName: currentDisplayName };
+    dispatch(userProfile(updateProfileData));
   };
 
+  // const updatedProfile = { ...getProfile, displayName: currentDisplayName, profileCmt: currentProfileCmt };
   const changedPhoto = async (e) => {
     const file = e.target.files[0];
     setSelectedFile(file);
@@ -69,12 +84,13 @@ const Profile = () => {
       const storageRef = ref(storage, URL);
       await uploadBytes(storageRef, file);
       const resultPhotoURL = await getDownloadURL(storageRef);
-
+      setCurrentPhotoURL(resultPhotoURL);
       const userDocRef = doc(db, "members", uid);
       await updateDoc(userDocRef, { photoURL: resultPhotoURL });
       alert("프로필 사진 변경 완료");
 
-      setCurrentPhotoURL(resultPhotoURL);
+      const updateProfileData = { ...getProfile, photoURL: resultPhotoURL };
+      dispatch(userProfile(updateProfileData));
     } catch (error) {
       console.log(error);
       alert("프로필 사진 변경 실패", error);
@@ -98,16 +114,16 @@ const Profile = () => {
               </P.ImageUploadBox>
             </P.ProfileImageWrap>
 
-            <form onSubmit={profileUpdateHamdler}>
+            <form onSubmit={profileUpdateHandler}>
               <P.ProfileBody>
                 <p>EMAIL</p>
                 <P.MemberInput type="email" placeholder={getProfile.email} disabled={true} />
 
                 <p>NAME</p>
-                <P.MemberInput type="text" value={currentDisplayName} onChange={nameChangeHandler} />
+                <P.MemberInput type="text" maxLength={10} value={currentDisplayName} onChange={nameChangeHandler} />
                 {/* <p>좋아요 수 : {profile.likes}</p> */}
                 <p>COMMENT</p>
-                <P.MemberInput value={currentProfileCmt} onChange={profileCmtChangeHandler} />
+                <P.MemberTextarea maxLength={30} value={currentProfileCmt} onChange={profileCmtChangeHandler} />
                 <P.Btns type="submit" onClick={updateProfile} btn="profileBtn">
                   프로필 정보 변경
                 </P.Btns>
@@ -123,7 +139,7 @@ const Profile = () => {
               {getMyPosts.map((info) => {
                 return (
                   <S.PostingBox onClick={() => Navigate(`/post/${info.postId}`)} key={info.postId}>
-                    <S.PostingFoodPhoto src={info.photoURL ? info.photoURL : "https://velog.velcdn.com/images/darkfairy7/post/f0d9a0ca-ad26-4a4c-b1b3-756dfb4fb3d0/banner-rtan.png"} />
+                    <S.PostingFoodPhoto src={info.photoURL} />
                     <S.PostingTitle>{info.postTitle}</S.PostingTitle>
                     <S.PostingBody>작성자</S.PostingBody>
                     <S.PostingDateLikeBox>
