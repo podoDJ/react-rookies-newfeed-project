@@ -6,14 +6,13 @@ import { db } from "../../firebase";
 import { doc, updateDoc } from "@firebase/firestore";
 import { UPDATE_COMMENT } from "../../redux/modules/comment";
 
-const CommentChange = ({ commentId }) => {
+const CommentChange = ({ closeModal, commentId }) => {
   const navigate = useNavigate();
   const [uptitle, setUpTitle] = useState();
   const [upComment, setUpComment] = useState();
   const { id } = useParams();
   const comments = useSelector((state) => state.comment);
-  const comment = comments.find((comment) => comment.commentId === id);
-
+  const comment = comments.find((comment) => comment.commentId === commentId);
   const dispatch = useDispatch();
 
   return (
@@ -35,7 +34,7 @@ const CommentChange = ({ commentId }) => {
               title: uptitle,
               comment: upComment,
               postId: id,
-              commentId,
+              commentId: comment.commentId,
             },
           });
         }}
@@ -55,10 +54,63 @@ const CommentChange = ({ commentId }) => {
           }}
         />
 
-        <button>수정</button>
+        <br />
+        <STUpBtn>수정</STUpBtn>
+        <STDeBtn onClick={closeModal}>닫기</STDeBtn>
       </form>
     </div>
   );
 };
 
 export default CommentChange;
+
+const StUpInput = styled.input`
+  position: absolute;
+  top: 10px;
+  left: 25px;
+  width: 90%;
+  height: 40px;
+  padding: 15px;
+  background-color: var(--color-bg);
+  border: 1px solid rgba(77, 77, 77, 0.796);
+  border-radius: 3px;
+`;
+
+// const StUpInput = styled.input`
+//   top: 10px;
+//   left: 25px;
+//   width: 90%;
+//   height: 40px;
+//   padding: 15px;
+//   background-color: var(--color-bg);
+//   border: 1px solid rgba(77, 77, 77, 0.796);
+//   border-radius: 3px;
+// `;
+
+const STUpBtn = styled.button`
+  top: 55px;
+  right: 65px;
+  color: #a8a7a7c4;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+
+  &:hover {
+    color: var(--color-text);
+    text-decoration: underline;
+  }
+`;
+
+const STDeBtn = styled.button`
+  top: 55px;
+  right: 30px;
+  color: #a8a7a7c4;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+
+  &:hover {
+    color: var(--color-text);
+    text-decoration: underline;
+  }
+`;

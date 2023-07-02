@@ -4,6 +4,7 @@ import { styled } from "styled-components";
 import { auth } from "../../../firebase";
 import { signOut } from "firebase/auth";
 import { useSelector } from "react-redux";
+
 const logoUrl = "/assets/images/honcook.png";
 
 export const HeaderComp = () => {
@@ -186,16 +187,13 @@ const S = {
   HeaderMenuDiv: styled.div`
     display: flex;
     align-items: center;
-    /* margin: 0 10px; */
-    /*동준변경시도*/
     margin: 0 15px;
   `,
   HeaderMenu: styled.span`
     font-size: 25px;
     font-weight: 600;
-    /* margin: 0 15px; */
+
     cursor: pointer;
-    /*동준변경시도*/
     height: 100%;
     display: flex;
     align-items: center;
@@ -209,9 +207,7 @@ const S = {
   HeaderSubMenu: styled.span`
     font-size: 25px;
     font-weight: 600;
-    /* margin: 0 15px; */
     cursor: pointer;
-    /*동준변경시도*/
     height: 100%;
     display: flex;
     align-items: center;
@@ -230,7 +226,6 @@ const S = {
     margin-left: 10px;
     cursor: pointer;
   `,
-
   Logo: styled.img`
     width: 200px;
   `,
