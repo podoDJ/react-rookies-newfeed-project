@@ -4,7 +4,7 @@ import { styled } from "styled-components";
 import { auth } from "../../../firebase";
 import { signOut } from "firebase/auth";
 import { useSelector } from "react-redux";
-
+const logoUrl = "/assets/images/honcook.png"
 export const HeaderComp = () => {
   const navigate = useNavigate();
 
@@ -28,7 +28,7 @@ export const HeaderComp = () => {
             navigate("/");
           }}
         >
-          <S.Logo src="/assets/images/honcook.png" alt="logo" />
+          <S.Logo src={logoUrl} alt="logo" />
         </S.HeaderMenu>
         <S.HeaderMenu
           id="POST"
@@ -111,7 +111,7 @@ export const UserHeaderComp = () => {
             navigate("/");
           }}
         >
-          <S.Logo src="/assets/images/honcook.png" alt="logo" />
+          <S.Logo src={logoUrl} alt="logo" />
         </S.HeaderMenu>
         <S.HeaderMenu
           id="POST"
@@ -223,5 +223,8 @@ const S = {
     border-radius: 100%;
     margin-left: 10px;
     cursor: pointer;
+  `,
+  Logo: styled.img`
+    width: 200px;
   `,
 };
