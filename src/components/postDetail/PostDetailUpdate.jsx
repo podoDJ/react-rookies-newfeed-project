@@ -27,7 +27,7 @@ const PostDetailUpdate = () => {
   const PostingUpdate = async (event) => {
     event.preventDefault();
     const postRef = doc(db, "posts", post.postId);
-    await updateDoc(postRef, { ...post, postTitle: updatePostTitle, postBody: updatePostBody });
+    await updateDoc(postRef, { ...post, postTitle: updatePostTitle, postBody: updatePostBody, postIngredient: updatedPostIngredient, postRecipe: updatedPostRecipe });
     dispatch(
       updatePosts({
         postId: id,
