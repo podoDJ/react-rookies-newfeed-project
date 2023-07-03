@@ -16,7 +16,7 @@
 - 23.06.26일(월) - 23.07.02일(일)
 
 ## 🧑‍🤝‍🧑 맴버 구성 및 역할 분담
-- 이진솔 : Navigation Menu, Login & Sign up, Logout, 인기 레시피 & 멤버 불러오기
+- 이진솔 : Navigation Menu, Login & Sign up, Logout, 인기 레시피 & 멤버 불러오기 & 게시글 사진 업로드
 - 이동준 : 전체 게시물 목록, 게시물 등록 & 수정 & 삭제 & 상세보기
 - 정승하 : 게시물 상세페이지 댓글 조회 & 등록 & 수정 & 삭제
 - 박제이 : My Page 구현, Profile 조회 & 수정 & Profile image 등록, 내 게시물 보기
