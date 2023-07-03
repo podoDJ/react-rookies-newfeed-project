@@ -9,18 +9,19 @@ import { updatePosts } from "../../redux/modules/postWrite";
 const PostDetailUpdate = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [updatePostTitle, setUpdatePostTitle] = useState("");
-  const [updatePostBody, setUpdatePostBody] = useState("");
-  const [updatedPostIngredient, setUpdatedPostIngredient] = useState("");
-  const [updatedPostRecipe, setUpdatedPostRecipe] = useState("");
 
   const { id } = useParams();
   const posts = useSelector((state) => state.posts);
   const post = posts.find((post) => post.postId === id);
 
+  const [updatePostTitle, setUpdatePostTitle] = useState(post?.postTitle);
+  const [updatePostBody, setUpdatePostBody] = useState(post?.postBody);
+  const [updatedPostIngredient, setUpdatedPostIngredient] = useState(post?.postIngredient);
+  const [updatedPostRecipe, setUpdatedPostRecipe] = useState(post?.postRecipe);
+
   useEffect(() => {
     if (!post) {
-      navigate("/post");
+      navigate(`/post/${id}`);
     }
   }, [post, navigate]);
 
@@ -40,37 +41,38 @@ const PostDetailUpdate = () => {
 
     navigate(`/post/${id}`);
   };
-
-  // Input Limit 
-  const MAX_TITLE_LENGTH = 15
+  console.log("post=>", post);
+  // Input Limit
+  const MAX_TITLE_LENGTH = 15;
   const titleLimit = (event) => {
     event.target.value.length <= MAX_TITLE_LENGTH ? setUpdatePostTitle(event.target.value) : alert(`글자수 제한 ${MAX_TITLE_LENGTH}자 입니다.`);
   };
   const MAX_LENGTH = 80;
   const inputLimit = (event) => {
-    const inputName = event.target.name
-    const inputValue = event.target.value
+    const inputName = event.target.name;
+    const inputValue = event.target.value;
 
     const limitAlert = (inputValue, setInputValue) => {
       if (inputValue.length <= MAX_LENGTH) {
         setInputValue(inputValue);
       } else {
-        alert(`글자수 제한 ${MAX_LENGTH}자 입니다.`)
+        alert(`글자수 제한 ${MAX_LENGTH}자 입니다.`);
       }
-    }
+    };
     switch (inputName) {
       case "updatePostBody":
-      limitAlert(inputValue, setUpdatePostBody);
-      break;
+        limitAlert(inputValue, setUpdatePostBody);
+        break;
       case "updatedPostIngredient":
-      limitAlert(inputValue, setUpdatedPostIngredient);
-      break;
+        limitAlert(inputValue, setUpdatedPostIngredient);
+        break;
       case "updatedPostRecipe":
-      limitAlert(inputValue, setUpdatedPostRecipe);
-      break;
-      default: return;
+        limitAlert(inputValue, setUpdatedPostRecipe);
+        break;
+      default:
+        return;
     }
-  }
+  };
 
   return (
     <>
@@ -78,54 +80,24 @@ const PostDetailUpdate = () => {
         <div>
           <div>
             <S.UpdatePostLabel>오늘의 혼쿡</S.UpdatePostLabel>
-            <S.UpdatePostInput
-              text="text"
-              name="updatePostTitle"
-              value={updatePostTitle}
-              placeholder={post.postTitle}
-              onChange={(event) => {
-                titleLimit(event);
-              }}
-            />
+            <S.UpdatePostInput name="updatePostTitle" value={updatePostTitle} onChange={(event) => titleLimit(event)} />
           </div>
 
           <div>
             <S.UpdatePostLabel>CooK'Story</S.UpdatePostLabel>
-            <S.UpdatePostTextarea
-              text="text"
-              name="updatePostBody"
-              value={updatePostBody}
-              placeholder={post.postBody}
-              onChange={(event) => {
-                inputLimit(event)
-              }}
-            />
+            {/* <S.UpdatePostTextarea name="updatePostBody" value={updatePostBody} onChange={(event) => inputLimit(event)}></S.UpdatePostTextarea> */}
+            <S.UpdatePostTextarea name="updatePostBody" value={updatePostBody} onChange={(event) => inputLimit(event)}/>
           </div>
+          <div></div>
 
           <div>
             <S.UpdatePostLabel>오늘의 재료</S.UpdatePostLabel>
-            <S.UpdatePostTextarea
-              text="text"
-              name="updatedPostIngredient"
-              value={updatedPostIngredient}
-              placeholder={post.postIngredient}
-              onChange={(event) => {
-                inputLimit(event)
-              }}
-            />
+            <S.UpdatePostTextarea name="updatedPostIngredient" value={updatedPostIngredient} onChange={(event) => inputLimit(event)}/>
           </div>
 
           <div>
             <S.UpdatePostLabel>레시피</S.UpdatePostLabel>
-            <S.UpdatePostTextarea
-              text="text"
-              name="updatedPostRecipe"
-              value={updatedPostRecipe}
-              placeholder={post.postRecipe}
-              onChange={(event) => {
-                inputLimit(event)
-              }}
-            />
+            <S.UpdatePostTextarea name="updatedPostRecipe" value={updatedPostRecipe} onChange={(event) => inputLimit(event)} />
           </div>
         </div>
         <S.UpdateBtnCtn>
