@@ -11,6 +11,10 @@ import { myPosts } from "../../redux/modules/myPostReducer";
 import { onAuthStateChanged } from "firebase/auth";
 
 const Profile = () => {
+  const Navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  // 초기 회원가입 후 로그인 시 렌더링 시점이 로그인 전이기에 데이터가 리덕스 스토어에 저장되지 않아 프로필 접속 시 스토어로 데이터가 전달될 수 있도록 구현
   const firebaseGetProfile = () => {
     onAuthStateChanged(auth, async (user) => {
       if (user) {
@@ -20,7 +24,7 @@ const Profile = () => {
       }
     });
   };
-
+  // POST 게시물 CRUD 진행 후 프로필 페이지로 넘어올 경우 반영되지않아 프로필 접속 시 내가 작성한 게시물을 서버에서 받아올 수 있도록 구현
   const firebaseGetMyPosts = () => {
     onAuthStateChanged(auth, async (user) => {
       if (user) {
@@ -32,13 +36,11 @@ const Profile = () => {
     });
   };
 
+  // 위 함수들이 1회만 실행될 수 있도록 useEffect 내 함수 선언
   useEffect(() => {
     firebaseGetProfile();
     firebaseGetMyPosts();
   }, []);
-
-  const Navigate = useNavigate();
-  const dispatch = useDispatch();
 
   const getProfile = useSelector((state) => state.profile);
   const MyPosts = useSelector((state) => state.myPosts);
