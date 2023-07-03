@@ -7,12 +7,22 @@ export default function Layout({ children }) {
     return state.logReducer.user;
   });
   return (
-    <StLayout>
-      {user ? <UserHeaderComp /> : <HeaderComp />}
-      <div>{children}</div>
-    </StLayout>
+    <>
+      <StHeader>{user ? <UserHeaderComp /> : <HeaderComp />}</StHeader>
+      <StLayout>
+        <div>{children}</div>
+      </StLayout>
+    </>
   );
 }
+
+// 제이 추가
+const StHeader = styled.header`
+  position: fixed;
+  width: 100%;
+  top: 0;
+  z-index: 999;
+`;
 
 const StLayout = styled.div`
   max-width: 1200px;

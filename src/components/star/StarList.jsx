@@ -12,17 +12,24 @@ export default function StarList() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
+  const updateMembers = async () => {
+    const q = query(collection(db, "members"));
+    const getMembers = await getDocs(q);
+
+    const result = getMembers.docs.map((x) => x.data());
+    dispatch(showMembers(result));
+  };
+
   const starList = useSelector((state) => state.logReducer.members);
 
   useEffect(() => {
+    updateMembers();
     // showMembers 액션을 디스패치하여 멤버 정보 표시
     dispatch(showMembers(starList));
   }, []);
 
   const updateLikeHandler = async (memberId) => {
-    // 해당 uid와 일치하는 starList 컬렉션의 문서를 쿼리
-    // where()함수 : 쿼리에 필터를 추가하기 위해 사용
-
+    // 해당 memberId와 일치하는 starList 컬렉션의 문서를 쿼리
     let target = {};
 
     const q = query(collection(db, "members"), where("memberId", "==", memberId));
@@ -30,24 +37,15 @@ export default function StarList() {
     docSnap.forEach(async (x) => {
       target.id = x.id;
       target.likes = x.data().likes;
-      // target.isLiked = x.data().isLiked;
     });
 
+    // 좋아요 수 업데이트
     await updateDoc(doc(db, "members", target.id), { likes: target.likes + 1, isLiked: true });
 
+    // 새로운 starList 업데이트
     const newStarList = starList.map((x) => (x.memberId === memberId ? { ...x, likes: x.likes + 1 } : x));
     dispatch(showMembers(newStarList));
   };
-
-  // // 좋아요 수를 1 증가시킴
-  // await updateDoc(q, {
-  //   likes: likes + 1,
-  // });
-
-  // console.log("1", starListRef.docs[0].ref);
-  // newStarList를 업데이트하여 Redux 상태에 반영
-
-  // };
 
   return (
     <>
@@ -68,7 +66,7 @@ export default function StarList() {
                 >
                   <BiSolidLike size={25} />
                 </S.LikeBtn>
-                <p>{star.likes || 0}</p>
+                <S.LikeCut>{star.likes || 0}</S.LikeCut>
               </S.LikesWrapper>
               <S.Photo src={star.photoURL} alt="member" />
               <S.Name>{star.displayName}</S.Name>

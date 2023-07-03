@@ -24,6 +24,8 @@ const GlobalStyle = createGlobalStyle`
   body {
     background-color: var(--color-bg);
     font-family: 'CookieRun-Regular';
+    // 제이 추가
+    margin-top:100px;
   }
 `;
 

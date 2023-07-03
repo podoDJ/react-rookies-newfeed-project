@@ -40,6 +40,38 @@ const PostDetailUpdate = () => {
 
     navigate(`/post/${id}`);
   };
+
+  // Input Limit 
+  const MAX_TITLE_LENGTH = 15
+  const titleLimit = (event) => {
+    event.target.value.length <= MAX_TITLE_LENGTH ? setUpdatePostTitle(event.target.value) : alert(`글자수 제한 ${MAX_TITLE_LENGTH}자 입니다.`);
+  };
+  const MAX_LENGTH = 80;
+  const inputLimit = (event) => {
+    const inputName = event.target.name
+    const inputValue = event.target.value
+
+    const limitAlert = (inputValue, setInputValue) => {
+      if (inputValue.length <= MAX_LENGTH) {
+        setInputValue(inputValue);
+      } else {
+        alert(`글자수 제한 ${MAX_LENGTH}자 입니다.`)
+      }
+    }
+    switch (inputName) {
+      case "updatePostBody":
+      limitAlert(inputValue, setUpdatePostBody);
+      break;
+      case "updatedPostIngredient":
+      limitAlert(inputValue, setUpdatedPostIngredient);
+      break;
+      case "updatedPostRecipe":
+      limitAlert(inputValue, setUpdatedPostRecipe);
+      break;
+      default: return;
+    }
+  }
+
   return (
     <>
       <S.UpdatePostForm onSubmit={PostingUpdate}>
@@ -52,7 +84,7 @@ const PostDetailUpdate = () => {
               value={updatePostTitle}
               placeholder={post.postTitle}
               onChange={(event) => {
-                setUpdatePostTitle(event.target.value);
+                titleLimit(event);
               }}
             />
           </div>
@@ -65,7 +97,7 @@ const PostDetailUpdate = () => {
               value={updatePostBody}
               placeholder={post.postBody}
               onChange={(event) => {
-                setUpdatePostBody(event.target.value);
+                inputLimit(event)
               }}
             />
           </div>
@@ -78,7 +110,7 @@ const PostDetailUpdate = () => {
               value={updatedPostIngredient}
               placeholder={post.postIngredient}
               onChange={(event) => {
-                setUpdatedPostIngredient(event.target.value);
+                inputLimit(event)
               }}
             />
           </div>
@@ -91,7 +123,7 @@ const PostDetailUpdate = () => {
               value={updatedPostRecipe}
               placeholder={post.postRecipe}
               onChange={(event) => {
-                setUpdatedPostRecipe(event.target.value);
+                inputLimit(event)
               }}
             />
           </div>

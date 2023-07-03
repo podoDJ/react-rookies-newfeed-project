@@ -3,6 +3,7 @@ import { styled } from "styled-components";
 export const S = {
   Title: styled.h2`
     text-align: center;
+    color: var(--color-text);
     font-size: 3rem;
     padding-top: 70px;
     padding-bottom: 50px;
@@ -42,11 +43,11 @@ export const S = {
     border: none;
     /* margin-left: 180px; */
     background-color: var(--color-white);
-    color: ${({ isLiked }) => (isLiked ? "#B46060" : "#D3D3D3")};
+    color: #b46060;
+  `,
 
-    &:hover {
-      color: #b46060;
-    }
+  LikeCut: styled.p`
+    color: var(--color-text);
   `,
 
   Photo: styled.img`
@@ -59,9 +60,11 @@ export const S = {
     font-size: 1.5rem;
     font-weight: bold;
     padding: 20px;
+    color: var(--color-text);
   `,
 
   Cmt: styled.p`
     padding-bottom: 10px;
+    color: var(--color-text);
   `,
 };

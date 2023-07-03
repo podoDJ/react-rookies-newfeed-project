@@ -9,6 +9,7 @@ const PostList = () => {
   const uid = useSelector((state) => state.logReducer.user.uid);
   const navigate = useNavigate();
 
+  // Date Descending Order
   const sortByDate = (a, b) => {
     return new Date(a.postDate).getTime() - new Date(b.postDate).getTime();
   };
@@ -25,13 +26,9 @@ const PostList = () => {
         {sortedPosts.map((post) => {
           return (
             <S.PostingBox onClick={() => navigate(`/post/${post.postId}`)} key={post.postId}>
-              {/* <p>글 아이디: {post.postId}</p> */}
               <S.PostingFoodPhoto src={post.photoURL ? post.photoURL : "https://velog.velcdn.com/images/darkfairy7/post/f0d9a0ca-ad26-4a4c-b1b3-756dfb4fb3d0/banner-rtan.png"} />
               <S.PostingTitle>{post.postTitle}</S.PostingTitle>
-
-              {/* <S.PostingBody>{post.display}</S.PostingBody> */}
-              <S.PostingBody>작성자</S.PostingBody>
-              {/* <p>uid: {post.uid}</p> */}
+              <S.PostingBody>{post.displayName}</S.PostingBody>
               <S.PostingDateLikeBox>
                 <p style={{ marginRight: "20px" }}> {post.postDate.slice(0, 11)}</p>
                 <S.PostingLike>

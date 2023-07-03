@@ -5,7 +5,7 @@ export const userProfile = (payload) => {
   };
 };
 
-const initialState = { displayName: "", email: "", intro: "", photoURL: "", uid: "", whoLikedMe: [] };
+const initialState = { displayName: "", email: "", profileCmt: "", photoURL: "", uid: "", memberId: "", likes: "", isLiked: "" };
 
 const profileReducer = (state = initialState, action) => {
   switch (action.type) {
