@@ -3,7 +3,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { ADD_COMMENT, REMOVE_COMMENT, baseComment } from "../../redux/modules/comment";
 import { addDoc, collection, deleteDoc, doc, getDocs, query, setDoc } from "firebase/firestore";
 import { db } from "../../firebase";
-import { Await, Link } from "react-router-dom";
 import { styled } from "styled-components";
 import CommentChange from "./CommentChange";
 const PostComments = ({ post, id }) => {
@@ -24,14 +23,14 @@ const PostComments = ({ post, id }) => {
     const fetchData = async () => {
       const q = query(collection(db, "comments"));
       const querySnapshot = await getDocs(q);
-      const abc = querySnapshot.docs.map((doc) => {
+      const query = querySnapshot.docs.map((doc) => {
         return { id: doc.id, ...doc.data() };
       });
-      dispatch(baseComment(abc));
+      dispatch(baseComment(query));
     };
     fetchData();
   }, [dispatch]);
-  const isOpen = comment.userId !== uid;
+  const checkId = comment.userId !== uid;
   return (
     <>
       <StCommentContainer>
@@ -70,7 +69,7 @@ const PostComments = ({ post, id }) => {
             }}
           />
 
-          {isOpen && <StCreateBtn>작성</StCreateBtn>}
+          {checkId && <StCreateBtn>작성</StCreateBtn>}
         </StForm>
       </StCommentContainer>
       <div>
@@ -79,13 +78,13 @@ const PostComments = ({ post, id }) => {
             return item.postId === id;
           })
           .map((comment) => {
-            const isOpen = comment.userId === uid;
+            const checkId = comment.userId === uid;
             const isModal = comment.commentId === upDataCommentId;
             return (
               <Stlist key={comment.commentId}>
                 <StCommentList>
-                  {isOpen && <StUpdatebtn onClick={() => setUpDataCommentId(comment.commentId)}>수정</StUpdatebtn>}
-                  {isOpen && (
+                  {checkId && <StUpdatebtn onClick={() => setUpDataCommentId(comment.commentId)}>수정</StUpdatebtn>}
+                  {checkId && (
                     <StDeleteBtn
                       onClick={async () => {
                         const commentRef = doc(db, "comments", comment.commentId);
@@ -103,11 +102,7 @@ const PostComments = ({ post, id }) => {
                   <StComment>{comment.comment}</StComment>
                 </StCommentList>
 
-                {/* {isOpen && <Stbutton onClick={openModal}>수정</Stbutton>} */}
                 {isModal && (
-                  // <Link to={`/post/commentup/${comment.commentId}`}>
-                  //   <button>수정</button>
-                  // </Link>
                   <StModalBox>
                     <StModalContents>
                       <CommentChange closeModal={closeModal} commentId={comment.commentId} />
@@ -241,19 +236,6 @@ const StModalBox = styled.div`
   padding-top: 40px;
   color: var(--color-text);
 `;
-
-// const StModalBox = styled.div`
-//   position: fixed;
-//   top: 0;
-//   left: 0;
-//   width: 100%;
-//   height: 100%;
-//   background-color: rgba(0, 0, 0, 0);
-//   display: flex;
-//   align-items: center;
-//   justify-content: center;
-//   color: var(--color-text);
-// `;
 
 const StModalContents = styled.div`
   background-color: var(--color-bg);

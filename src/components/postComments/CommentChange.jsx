@@ -1,7 +1,6 @@
-import React, { useEffect } from "react";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { db } from "../../firebase";
 import { doc, updateDoc } from "@firebase/firestore";
 import { UPDATE_COMMENT } from "../../redux/modules/comment";
@@ -67,17 +66,6 @@ const StUpInput = styled.input`
   border: 1px solid rgba(77, 77, 77, 0.796);
   border-radius: 3px;
 `;
-
-// const StUpInput = styled.input`
-//   top: 10px;
-//   left: 25px;
-//   width: 90%;
-//   height: 40px;
-//   padding: 15px;
-//   background-color: var(--color-bg);
-//   border: 1px solid rgba(77, 77, 77, 0.796);
-//   border-radius: 3px;
-// `;
 
 const STUpBtn = styled.button`
   top: 55px;
