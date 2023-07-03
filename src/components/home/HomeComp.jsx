@@ -1,10 +1,25 @@
 import { styled } from "styled-components";
 import { useSelector, useDispatch } from "react-redux";
-import { sortLikeMembers } from "../../redux/modules/logReducer";
+import { showMembers, sortLikeMembers } from "../../redux/modules/logReducer";
 import { useNavigate } from "react-router-dom";
 import { BiSolidLike } from "react-icons/bi";
+import { collection, getDocs, query } from "@firebase/firestore";
+import { useEffect } from "react";
+import { db } from "../../firebase";
 
 const HomeComp = () => {
+  const updateMembers = async () => {
+    const q = query(collection(db, "members"));
+    const getMembers = await getDocs(q);
+
+    const result = getMembers.docs.map((x) => x.data());
+    dispatch(showMembers(result));
+  };
+
+  useEffect(() => {
+    updateMembers();
+  }, []);
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
   dispatch(sortLikeMembers());
