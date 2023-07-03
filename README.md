@@ -9,7 +9,7 @@
 
 
 ## 🎬 구현 사이트
-- 배포 링크 : 
+- 배포 링크 : https://react-rookies-newfeed-project.vercel.app/
 
 ## ⏰ 개발 기간
 
