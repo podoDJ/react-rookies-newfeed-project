@@ -70,7 +70,7 @@ const Router = () => {
       fetchPostsData();
     }
 
-    if (members.length === 0) {
+    if (members?.length === 0) {
       const fetchMemberData = async () => {
         // q = 요청 객체
         const q = query(collection(db, "members"));
