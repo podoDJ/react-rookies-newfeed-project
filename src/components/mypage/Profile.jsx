@@ -48,7 +48,7 @@ const Profile = () => {
   const [selectedFile, setSelectedFile] = useState(null);
   const [currentPhotoURL, setCurrentPhotoURL] = useState(null);
   const [currentDisplayName, setCurrentDisplayName] = useState(null);
-  const [currentProfileCmt, setCurrentProfileCmt] = useState("안녕하세요, 반갑습니다.");
+  const [currentProfileCmt, setCurrentProfileCmt] = useState(null);
 
   useEffect(() => {
     setCurrentPhotoURL(getProfile.photoURL);
