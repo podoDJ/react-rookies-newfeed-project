@@ -1,21 +1,49 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { doc, updateDoc, query, docs, collection, where, getDoc, getDocs } from "firebase/firestore";
+import { doc, updateDoc, query, collection, where, getDoc, getDocs } from "firebase/firestore";
 import { auth, db, storage } from "../../firebase";
 import { P, S } from "./ProfileStyle";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { BiSolidLike } from "react-icons/bi";
 import { useNavigate } from "react-router-dom";
 import { userProfile } from "../../redux/modules/profileReducer";
-import { showMembers } from "../../redux/modules/logReducer";
+import { myPosts } from "../../redux/modules/myPostReducer";
 import { onAuthStateChanged } from "firebase/auth";
 
 const Profile = () => {
-  const getProfile = useSelector((state) => state.profile);
-  const getMyPosts = useSelector((state) => state.myPosts);
-
   const Navigate = useNavigate();
   const dispatch = useDispatch();
+
+  // 초기 회원가입 후 로그인 시 렌더링 시점이 로그인 전이기에 데이터가 리덕스 스토어에 저장되지 않아 프로필 접속 시 스토어로 데이터가 전달될 수 있도록 구현
+  const firebaseGetProfile = () => {
+    onAuthStateChanged(auth, async (user) => {
+      if (user) {
+        const docRef = doc(db, "members", user.uid);
+        const docSnap = await getDoc(docRef);
+        dispatch(userProfile({ ...docSnap.data(), uid: user.uid }));
+      }
+    });
+  };
+  // POST 게시물 CRUD 진행 후 프로필 페이지로 넘어올 경우 반영되지않아 프로필 접속 시 내가 작성한 게시물을 서버에서 받아올 수 있도록 구현
+  const firebaseGetMyPosts = () => {
+    onAuthStateChanged(auth, async (user) => {
+      if (user) {
+        const q = query(collection(db, "posts"), where("uid", "==", user.uid));
+        const docSnap = await getDocs(q);
+        const result = docSnap.docs.map((x) => x.data());
+        dispatch(myPosts(result));
+      }
+    });
+  };
+
+  // 위 함수들이 1회만 실행될 수 있도록 useEffect 내 함수 선언
+  useEffect(() => {
+    firebaseGetProfile();
+    firebaseGetMyPosts();
+  }, []);
+
+  const getProfile = useSelector((state) => state.profile);
+  const MyPosts = useSelector((state) => state.myPosts);
 
   const { uid } = getProfile;
 
@@ -60,7 +88,7 @@ const Profile = () => {
     e.preventDefault();
 
     if (!currentDisplayName) return alert("닉네임을 입력해주세요");
-
+    //firebase storage에 복합색인 설정 필요. 컬렉션ID : members, 필드 : displayName과 email 각각 입력, 컬렉션 종류(?)는 단일 컬렉션 선택 by DJ
     const q = query(collection(db, "members"), where("displayName", "==", currentDisplayName), where("email", "!=", getProfile.email));
     const result = await getDocs(q);
     const findData = result.docs[0]?.data();
@@ -138,12 +166,12 @@ const Profile = () => {
           </P.Contents>
           <P.contentsBody>
             <S.PostingBoxCtn>
-              {getMyPosts.map((info) => {
+              {MyPosts.map((info) => {
                 return (
                   <S.PostingBox onClick={() => Navigate(`/post/${info.postId}`)} key={info.postId}>
                     <S.PostingFoodPhoto src={info.photoURL} />
                     <S.PostingTitle>{info.postTitle}</S.PostingTitle>
-                    <S.PostingBody>작성자</S.PostingBody>
+                    <S.PostingBody>{info.displayName}</S.PostingBody>
                     <S.PostingDateLikeBox>
                       <p style={{ marginRight: "20px" }}> {info.postDate.slice(0, 11)}</p>
                       <S.PostingLike>

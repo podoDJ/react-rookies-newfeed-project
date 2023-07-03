@@ -1,4 +1,3 @@
-import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { styled } from "styled-components";
 import { auth } from "../../../firebase";
@@ -17,7 +16,6 @@ export const HeaderComp = () => {
     sessionStorage.setItem("clickedMenus", JSON.stringify(clickedMenuArray));
   };
   const clickedNow = clickedMenuArray.at(-1);
-  console.log("clickedNow=>", clickedNow);
 
   return (
     <S.Header>
@@ -88,16 +86,11 @@ export const UserHeaderComp = () => {
     sessionStorage.setItem("clickedMenus", JSON.stringify(clickedMenuArray));
   };
   const clickedNow = clickedMenuArray.at(-1);
-  console.log("clickedNow=>", clickedNow);
 
   const logOutFunc = async () => {
     await signOut(auth);
     window.location.reload();
   };
-
-  const user = useSelector((state) => {
-    return state.logReducer.user;
-  });
 
   // 제이 추가
   const getProfile = useSelector((state) => state.profile);
@@ -163,7 +156,7 @@ export const UserHeaderComp = () => {
         </S.HeaderSubMenu>
         <S.Img
           id="PROFILE IMG"
-          src={getProfile.photoURL}
+          src={getProfile.photoURL ? getProfile.photoURL : "https://i.pinimg.com/originals/99/f3/06/99f3068e425e6b9f56d683b0859ee942.jpg"}
           onClick={(event) => {
             addItem(event);
             navigate("/mypage");

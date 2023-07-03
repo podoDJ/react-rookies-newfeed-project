@@ -1,18 +1,19 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { P, G } from "../starDetail/starProfile.styles";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { showMembers } from "../../redux/modules/logReducer";
 
 const Profile = () => {
+  const navigate = useNavigate()
   const { id } = useParams();
   const dispatch = useDispatch();
   const starList = useSelector((state) => state.logReducer.members);
-  // console.log("1", starList);
-
   const user = starList.find((user) => {
     return user.memberId == id;
   });
+
+
 
   useEffect(() => {
     dispatch(showMembers(starList));
@@ -22,16 +23,16 @@ const Profile = () => {
     <>
       <P.ProfileContainer>
         <P.ProfileImageBox>
-          <P.ProfileImage src={user.photoURL} alt="profile" />
+          <P.ProfileImage src={user?.photoURL} alt="profile" />
         </P.ProfileImageBox>
         <P.ProfileBody>
-          <p>EMAIL&nbsp;&nbsp;&nbsp; {user.email}</p>
+          <p>EMAIL&nbsp;&nbsp;&nbsp; {user?.email}</p>
           <P.NameBox>
-            <p>NAME&nbsp;&nbsp;&nbsp;{user.displayName}</p>
+            <p>NAME&nbsp;&nbsp;&nbsp;&nbsp;{user?.displayName}</p>
           </P.NameBox>
           <P.IntroContainer>
             <label>COMMENT</label>
-            <P.Intro> {user.profileCmt}</P.Intro>
+            <P.Intro> {user?.profileCmt}</P.Intro>
           </P.IntroContainer>
         </P.ProfileBody>
       </P.ProfileContainer>

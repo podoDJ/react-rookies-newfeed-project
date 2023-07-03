@@ -7,6 +7,7 @@ import { addPosts } from "../../redux/modules/postWrite";
 import { styled } from "styled-components";
 import { getDownloadURL, ref, uploadBytes } from "@firebase/storage";
 
+//Preview Modal Component(by Jinsol)
 const PreviewModal = ({ photoURL, setOpenModal, setPhotoURL, selectedFile }) => {
   return (
     <S.ModalDiv>
@@ -58,6 +59,7 @@ const FileForm = ({ handleUpload, handleFileSelect, photoURL }) => {
   );
 };
 
+//PostForm Component(by Dongjun)
 const PostForm = () => {
   //uid get
   const user = useSelector((state) => state.logReducer.user);
@@ -109,7 +111,7 @@ const PostForm = () => {
     if (photoURL) {
       // 이전에 사용했던 방법: const newPost = { postId: shortid.generate(), postTitle, postBody };
       const collectionRef = collection(db, "posts");
-      const docRef = await addDoc(collectionRef, { postTitle, postBody, uid: user.uid, displayName: user.displayName, postWhoLiked, postDate, photoURL });
+      const docRef = await addDoc(collectionRef, { postTitle, postBody, postIngredient, postRecipe, uid: user.uid, displayName: user.displayName, postWhoLiked, postDate, photoURL });
 
       // 도큐먼트 아이디가 바로 필드에 반영되도록 하는 코드
       const postDocRef = doc(db, "posts", docRef.id);
@@ -130,7 +132,6 @@ const PostForm = () => {
           postRecipe,
           uid: user.uid,
           displayName: user.displayName,
-          // postLike,
           postWhoLiked,
           postDate,
         })
@@ -141,7 +142,7 @@ const PostForm = () => {
     } else if (!photoURL) alert("이미지가 업로드 되지 않았습니다.\n이미지 선택 후 업로드 버튼을 클릭해주세요!");
   };
 
-  //최대 글자수 제한
+  //Input Limit
   const MAX_TITLE_LENGTH = 15;
   const titleLimit = (event) => {
     event.target.value.length <= MAX_TITLE_LENGTH ? setPostTitle(event.target.value) : alert(`글자수 제한 ${MAX_TITLE_LENGTH}자 입니다.`);
@@ -177,7 +178,7 @@ const PostForm = () => {
       <S.PostForm onSubmit={handleSubmit}>
         <div>
           <div>
-            <S.PostLabel for="postTitle">Today HonCook</S.PostLabel>
+            <S.PostLabel HTtmlFor="postTitle">Today HonCook</S.PostLabel>
             <S.PostInput
               text="text"
               name="postTitle"
@@ -189,7 +190,7 @@ const PostForm = () => {
           </div>
 
           <div>
-            <S.PostLabel for="postBody">CooK Story</S.PostLabel>
+            <S.PostLabel HTtmlFor="postBody">CooK Story</S.PostLabel>
             <S.PostTextarea
               text="text"
               name="postBody"
@@ -201,7 +202,7 @@ const PostForm = () => {
           </div>
 
           <div>
-            <S.PostLabel for="postIngredient">CooK Ingredient</S.PostLabel>
+            <S.PostLabel HTtmlFor="postIngredient">CooK Ingredient</S.PostLabel>
             <S.PostTextarea
               text="text"
               name="postIngredient"
@@ -213,7 +214,7 @@ const PostForm = () => {
           </div>
 
           <div>
-            <S.PostLabel for="postRecipe">Cook recipe</S.PostLabel>
+            <S.PostLabel HTtmlFor="postRecipe">Cook recipe</S.PostLabel>
             <S.PostTextarea
               text="text"
               name="postRecipe"

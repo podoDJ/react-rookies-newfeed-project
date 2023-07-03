@@ -52,6 +52,7 @@ export const P = {
     border-radius: 5px;
     background-color: transparent;
     color: var(--color-text);
+    outline: none;
   `,
   MemberTextarea: styled.textarea`
     width: 296px;
@@ -61,6 +62,7 @@ export const P = {
     border-radius: 5px;
     background-color: transparent;
     color: var(--color-text);
+    outline: none;
   `,
 
   Contents: styled.div`
@@ -116,28 +118,6 @@ export const P = {
 };
 
 export const S = {
-  PostWriteBox: styled.div`
-    background-color: white;
-    width: 92.5%;
-    height: 70px;
-    padding: 1rem;
-    display: flex;
-    align-items: center;
-    border-radius: 20px;
-    box-shadow: 7px 5px 23px -9px rgba(0, 0, 0, 0.3);
-    margin: 30px auto;
-    -webkit-box-shadow: 7px 5px 23px -9px rgba(0, 0, 0, 0.3);
-    -moz-box-shadow: 7px 5px 23px -9px rgba(0, 0, 0, 0.3);
-    cursor: pointer;
-  `,
-
-  PostWriteBoxCnt: styled.span`
-    font-size: 23px;
-    font-weight: 500;
-    color: #4d4d4d;
-    margin: 10px;
-  `,
-
   PostingBoxCtn: styled.div`
     display: flex;
     flex-wrap: wrap;
