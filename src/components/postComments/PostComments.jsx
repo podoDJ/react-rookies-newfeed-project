@@ -3,7 +3,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { ADD_COMMENT, REMOVE_COMMENT, baseComment } from "../../redux/modules/comment";
 import { addDoc, collection, deleteDoc, doc, getDocs, query, setDoc } from "firebase/firestore";
 import { db } from "../../firebase";
-import { Await, Link } from "react-router-dom";
 import { styled } from "styled-components";
 import CommentChange from "./CommentChange";
 
@@ -19,14 +18,14 @@ const PostComments = ({ post, id }) => {
   const [comment, setComment] = useState("");
   const [upDataCommentId, setUpDataCommentId] = useState("");
 
-  //임시방편 패치 : 새로 작성한 글에 작성자가 바로 댓글을 달 때 렌더링이 되지 않아 표시되지 않는 이슈가 있었음. 
+  //임시방편 패치 : 새로 작성한 글에 작성자가 바로 댓글을 달 때 렌더링이 되지 않아 표시되지 않는 이슈가 있었음.
   //일단 useState와 useDispatch의 의존성배열에 on/off트리거로 임시패치 해 놓음. useEffect와 Redux에 대한 공부가 필요.
-   
-  const [trigger, setTrigger] = useState(false)
+
+  const [trigger, setTrigger] = useState(false);
   const triggerOnOff = () => {
-    console.log("trigger==>",trigger)
-    setTrigger((prev)=>!prev)
-  }
+    console.log("trigger==>", trigger);
+    setTrigger((prev) => !prev);
+  };
   const closeModal = () => {
     setUpDataCommentId(false);
   };
@@ -50,7 +49,7 @@ const PostComments = ({ post, id }) => {
         <StForm
           onSubmit={async (e) => {
             e.preventDefault();
-            
+
             if (!comment) {
               alert("내용을 추가해주세요");
               return false;
@@ -72,7 +71,7 @@ const PostComments = ({ post, id }) => {
                 comment,
               },
             });
-            triggerOnOff()
+            triggerOnOff();
           }}
         >
           <StinputText

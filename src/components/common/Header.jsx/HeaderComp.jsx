@@ -1,4 +1,3 @@
-import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { styled } from "styled-components";
 import { auth } from "../../../firebase";
@@ -92,10 +91,6 @@ export const UserHeaderComp = () => {
     await signOut(auth);
     window.location.reload();
   };
-
-  const user = useSelector((state) => {
-    return state.logReducer.user;
-  });
 
   // 제이 추가
   const getProfile = useSelector((state) => state.profile);
