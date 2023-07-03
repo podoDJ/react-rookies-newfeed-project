@@ -4,7 +4,7 @@ import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 import { styled } from "styled-components";
 import { ERR_CODE } from "../../constant";
-import { addDoc, collection, doc, getCountFromServer, getDocs, limit, orderBy, query, setDoc } from "@firebase/firestore";
+import { collection, doc, getCountFromServer, getDocs, limit, orderBy, query, setDoc } from "@firebase/firestore";
 
 const SignupComp = () => {
   const [name, setName] = useState("");

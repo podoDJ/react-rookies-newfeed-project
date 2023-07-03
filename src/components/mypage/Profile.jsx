@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { doc, updateDoc, query, docs, collection, where, getDoc, getDocs } from "firebase/firestore";
+import { doc, updateDoc, query, collection, where, getDoc, getDocs } from "firebase/firestore";
 import { auth, db, storage } from "../../firebase";
 import { P, S } from "./ProfileStyle";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
@@ -90,7 +90,6 @@ const Profile = () => {
     const q = query(collection(db, "members"), where("displayName", "==", currentDisplayName), where("email", "!=", getProfile.email));
     const result = await getDocs(q);
     const findData = result.docs[0]?.data();
-    
 
     if (findData) return alert("이미 사용중인 닉네임 입니다.");
 

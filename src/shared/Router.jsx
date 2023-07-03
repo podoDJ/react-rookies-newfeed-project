@@ -8,7 +8,6 @@ import Post from "../pages/Post";
 import PostDetail from "../pages/PostDetail";
 import StarDetail from "../pages/StarDetail";
 import Star from "../pages/Star";
-import About from "../pages/About";
 import Mypage from "../pages/Mypage";
 
 //동준 추가
@@ -17,13 +16,13 @@ import PostUpdate from "../pages/PostUpdate";
 
 //진솔 추가
 import { onAuthStateChanged } from "firebase/auth";
-import { useDispatch } from "react-redux";
-import { showMembers, showUser, sortLikeMembers } from "../redux/modules/logReducer";
+import { useDispatch, useSelector } from "react-redux";
+import { showMembers, showUser } from "../redux/modules/logReducer";
 import { auth, db } from "../firebase";
 
 import { useEffect } from "react";
-import { collection, doc, getDoc, getDocs, query, where } from "@firebase/firestore";
-import { showPosts, sortLikePosts } from "../redux/modules/postWrite";
+import { collection, doc, getDoc, getDocs, query } from "@firebase/firestore";
+import { showPosts } from "../redux/modules/postWrite";
 import PostCommentUpdata from "../pages/PostCommentUpdata";
 
 // 제이 추가
@@ -38,6 +37,11 @@ const Router = () => {
       // dispatch(logChange(true));
     } else return;
   });
+
+  const posts = useSelector((state) => state.posts);
+  const members = useSelector((state) => state.logReducer.members);
+  console.log(posts);
+
   useEffect(() => {
     // 제이 추가----
     const getProfile = () => {
@@ -51,33 +55,38 @@ const Router = () => {
     };
     getProfile();
 
-    //------제이 추가
-    const newArr = [];
-    const fetchPostsData = async () => {
-      const q = query(collection(db, "posts"));
-      const querySnapshot = await getDocs(q);
-      querySnapshot.forEach((doc) => {
-        newArr.push({ id: doc.id, ...doc.data() });
-      });
-      dispatch(showPosts(newArr));
-    };
-    fetchPostsData();
+    //------진솔 추가
 
-    const fetchMemberData = async () => {
-      // q = 요청 객체
-      const q = query(collection(db, "members"));
-      const querySnapshot = await getDocs(q);
-      const initialStarList = [];
-      querySnapshot.forEach((doc) => {
-        const data = {
-          id: doc.id,
-          ...doc.data(),
-        };
-        initialStarList.push(data);
-      });
-      dispatch(showMembers(initialStarList));
-    };
-    fetchMemberData();
+    if (posts?.length === 0) {
+      const newArr = [];
+      const fetchPostsData = async () => {
+        const q = query(collection(db, "posts"));
+        const querySnapshot = await getDocs(q);
+        querySnapshot.forEach((doc) => {
+          newArr.push({ id: doc.id, ...doc.data() });
+        });
+        dispatch(showPosts(newArr));
+      };
+      fetchPostsData();
+    }
+
+    if (!members) {
+      const fetchMemberData = async () => {
+        // q = 요청 객체
+        const q = query(collection(db, "members"));
+        const querySnapshot = await getDocs(q);
+        const initialStarList = [];
+        querySnapshot.forEach((doc) => {
+          const data = {
+            id: doc.id,
+            ...doc.data(),
+          };
+          initialStarList.push(data);
+        });
+        dispatch(showMembers(initialStarList));
+      };
+      fetchMemberData();
+    }
   }, []);
 
   return (
