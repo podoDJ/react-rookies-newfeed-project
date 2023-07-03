@@ -14,10 +14,10 @@ const PostDetailBrowse = ({ post, id }) => {
   const uid = useSelector((state) => state.logReducer.user.uid);
 
   const [updatedPostWhoLiked, setUpdatedPostWhoLiked] = useState(post?.postWhoLiked || []);
-  if (!post) {
-    navigate("/post");
-    return null;
-  }
+  // if (!post) {
+  //   navigate("/post");
+  //   return null;
+  // }
 
   const deletePost = async () => {
     if (post.uid !== uid) {
@@ -59,10 +59,10 @@ const PostDetailBrowse = ({ post, id }) => {
             이전으로
           </S.PrevBtn>
 
-          <S.PostTitle>{post.postTitle}</S.PostTitle>
-          <S.PostDate>{post.postDate}</S.PostDate>
-          <S.PostBtnCtn uid={uid} postuid={post.uid}>
-            <Link to={`/postupdate/${post.postId}`}>
+          <S.PostTitle>{post?.postTitle}</S.PostTitle>
+          <S.PostDate>{post?.postDate}</S.PostDate>
+          <S.PostBtnCtn uid={uid} postuid={post?.uid}>
+            <Link to={`/postupdate/${post?.postId}`}>
               <S.UpdateBtn>수정</S.UpdateBtn>
             </Link>
             <S.DeleteBtn onClick={deletePost}>삭제</S.DeleteBtn>
@@ -73,14 +73,14 @@ const PostDetailBrowse = ({ post, id }) => {
             <S.LikeNum>{updatedPostWhoLiked.length || 0}</S.LikeNum>
           </S.PostDetailLike>
 
-          <S.PostImg src={post.photoURL} photoURL={post.photoURL} />
+          <S.PostImg src={post?.photoURL} photoURL={post?.photoURL} />
           <S.Body>
             <S.Label>CooK Story</S.Label>
-            <S.Text>{post.postBody}</S.Text>
+            <S.Text>{post?.postBody}</S.Text>
             <S.Label>CooK Ingredient</S.Label>
-            <S.Text>{post.postIngredient}</S.Text>
+            <S.Text>{post?.postIngredient}</S.Text>
             <S.Label>Cook recipe</S.Label>
-            <S.Text>{post.postRecipe}</S.Text>
+            <S.Text>{post?.postRecipe}</S.Text>
           </S.Body>
         </S.PostDetailBox>
       </S.PostWrapper>
