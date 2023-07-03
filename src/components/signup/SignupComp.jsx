@@ -4,7 +4,7 @@ import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 import { styled } from "styled-components";
 import { ERR_CODE } from "../../constant";
-import { addDoc, collection, doc, getCountFromServer, getDocs, limit, orderBy, query, setDoc } from "@firebase/firestore";
+import { collection, doc, getCountFromServer, getDocs, limit, orderBy, query, setDoc } from "@firebase/firestore";
 
 const SignupComp = () => {
   const [name, setName] = useState("");
@@ -40,7 +40,7 @@ const SignupComp = () => {
       await setDoc(doc(collectionRef, userCredential.user.uid), {
         displayName: name,
         email: userCredential.user.email,
-        intro: "",
+        profileCmt: "안녕하세요, 반갑습니다.",
         photoURL: "https://i.pinimg.com/originals/99/f3/06/99f3068e425e6b9f56d683b0859ee942.jpg",
         isLiked: false,
         likes: 0,
